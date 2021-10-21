@@ -21,7 +21,7 @@
         <activity
             android:name=".MapsActivity"
             android:exported="true"
-            android:label="mapsactivity">
+            android:label="activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
