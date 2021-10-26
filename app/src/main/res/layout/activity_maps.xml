@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="아"
             />
-   </GridLayout>
+    </GridLayout>
     <GridLayout
         android:id="@+id/grid"
         android:layout_width="match_parent"
