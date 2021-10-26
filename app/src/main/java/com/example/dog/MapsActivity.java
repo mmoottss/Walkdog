@@ -76,7 +76,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
-                    txtResult.setText("위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" );
+                    txtResult.setText(
+                            "위도 : " + longitude + "\n" +
+                            "경도 : " + latitude + "\n"
+                            );
                     userpos = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, gpsLocationListener);
@@ -88,9 +91,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             LatLng tmpuserpos = userpos;
+            String provider = location.getProvider();
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-            txtResult.setText("위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" );
+            double altitude = location.getAltitude();
+            txtResult.setText("위치정보 : " + provider + "\n" +
+                    "위도 : " + longitude + "\n" +
+                    "경도 : " + latitude + "\n" +
+                    "고도  : " + altitude);
             userpos = new LatLng(latitude, longitude);
             PolylineOptions polylineOptions = new PolylineOptions().add(tmpuserpos).add(userpos);
             Polyline polyline = mMap.addPolyline(polylineOptions);

@@ -28,7 +28,7 @@
             android:id="@+id/x"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="아"
+            android:text="abcde"
             />
     </GridLayout>
     <GridLayout
