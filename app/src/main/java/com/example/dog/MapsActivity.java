@@ -74,17 +74,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     ActivityCompat.requestPermissions(MapsActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                 } else {
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    String provider = location.getProvider();
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
-                    double altitude = location.getAltitude();
-                    txtResult.setText("위치정보 : " + provider + "\n" +
-                            "위도 : " + longitude + "\n" +
-                            "경도 : " + latitude + "\n" +
-                            "고도  : " + altitude);
+                    txtResult.setText("위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" );
                     userpos = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5, gpsLocationListener);
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, gpsLocationListener);
                 }
             }
         });
@@ -93,17 +88,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             LatLng tmpuserpos = userpos;
-            String provider = location.getProvider();
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-            double altitude = location.getAltitude();
-            txtResult.setText("위치정보 : " + provider + "\n" +
-                    "위도 : " + longitude + "\n" +
-                    "경도 : " + latitude + "\n" +
-                    "고도  : " + altitude);
+            txtResult.setText("위도 : " + longitude + "\n" + "경도 : " + latitude + "\n" );
             userpos = new LatLng(latitude, longitude);
             PolylineOptions polylineOptions = new PolylineOptions().add(tmpuserpos).add(userpos);
             Polyline polyline = mMap.addPolyline(polylineOptions);
+            polyline.setWidth(20f);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
         }
 
