@@ -1,25 +1,18 @@
 package com.example.dog;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Community extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
-    Fragment1 fragment1;
-    Fragment2 fragment2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        fragment1 = new Fragment1();
-        fragment2 = new Fragment2();
+        setContentView(R.layout.activity_community);
         /*getSupportFragmentManager().beginTransaction().
                 replace(R.id.main_layout,fragment1).commitAllowingStateLoss();*/
 

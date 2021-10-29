@@ -17,19 +17,18 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCE5n7MIhCmwu6B5v1NMY1CjW6ky4FixkQ" />
 
-
+        <activity
+            android:name=".Community"/>
         <activity
             android:name=".Maps"
             android:exported="true"
             android:label="activity">
-            <!--// .MapsActivity   ,   .Community   ,-->
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -46,27 +47,22 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Button button1;
+    Button button1,button2;
     TextView txtResult;
-    double longitude;
-    double latitude;
+    double longitude,latitude;
     LatLng userpos,firstpos;
-    CameraPosition cam;
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         firstpos = new LatLng(37, 128);
-
         button1 = (Button) findViewById(R.id.option);
         txtResult = (TextView) findViewById(R.id.x);
-        // 권한 요청
+
+        // 설정버튼, 본인좌표로 이동
         button1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -74,16 +70,21 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                     ActivityCompat.requestPermissions(Maps.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                 } else {
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, gpsLocationListener);
                     longitude = location.getLongitude();
                     latitude = location.getLatitude();
-                    txtResult.setText(
-                            "위도 : " + longitude + "\n" +
-                            "경도 : " + latitude + "\n"
-                            );
+                    txtResult.setText("위도 : " + longitude + "\n" +"경도 : " + latitude + "\n");
                     userpos = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, gpsLocationListener);
                 }
+            }
+        });
+        button2=(Button)findViewById(R.id.cummunity);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Maps.this, Community.class);
+                startActivity(intent);
             }
         });
     }
@@ -93,37 +94,20 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             LatLng tmpuserpos = userpos;
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-            txtResult.setText(
-                    "위도 : " + longitude + "\n" +
-                            "경도 : " + latitude + "\n"
-            );
+            txtResult.setText("위도 : " + longitude + "\n" +"경도 : " + latitude + "\n");
             userpos = new LatLng(latitude, longitude);
             PolylineOptions polylineOptions = new PolylineOptions().add(tmpuserpos).add(userpos);
             Polyline polyline = mMap.addPolyline(polylineOptions);
             polyline.setWidth(20f);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
         }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
     };
-
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mMap.setMyLocationEnabled(true);
