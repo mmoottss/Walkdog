@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">dog</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="strBtn1">버튼입니다.</string>
+    <string name="hint_id">아이디를 입력하세요.</string>
+    <string name="hint_pass">비밀번호를 입력하세요.</string>
+    <string name="hint_nickname">닉네임을 입력하세요.</string>
 </resources>
