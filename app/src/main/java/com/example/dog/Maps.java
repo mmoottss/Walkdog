@@ -1,5 +1,6 @@
 package com.example.dog;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -51,31 +52,52 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     TextView txtResult;
     double longitude,latitude;
     LatLng userpos,firstpos;
+    int startflag=0;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mapFragment.getMapAsync(this);
 
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         firstpos = new LatLng(37, 128);
-        button1 = (Button) findViewById(R.id.option);
+        button1 = (Button) findViewById(R.id.start);
         txtResult = (TextView) findViewById(R.id.x);
 
-        // 설정버튼, 본인좌표로 이동
+        // 시작버튼, 본인좌표로 이동
         button1.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
-                        android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Maps.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                } else {
-                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, gpsLocationListener);
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-                    txtResult.setText("위도 : " + longitude + "\n" +"경도 : " + latitude + "\n");
-                    userpos = new LatLng(latitude, longitude);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
+                if (startflag == 0) {
+                    startflag=1;
+                    if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
+                            android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(Maps.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                    } else {
+                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, gpsLocationListener);
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
+                        txtResult.setText("위도 : " + longitude + "\n" + "경도 : " + latitude + "\n");
+                        userpos = new LatLng(latitude, longitude);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
+                    }
+                }
+                else {
+                    startflag=0;
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 50, new LocationListener() {
+                        public void onLocationChanged(@NonNull Location location) {
+
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
+                        }
+                    });
                 }
             }
         });
@@ -101,6 +123,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             polyline.setWidth(20f);
             mMap.moveCamera(CameraUpdateFactory.newLatLng(userpos));
         }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
     };
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
@@ -110,9 +135,20 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstpos,16));
+        if(location==null){
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstpos,16));
+        }
+        else {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            userpos = new LatLng(latitude, longitude);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userpos,16));
+        }
     }
 }

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Maps">
 
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -18,8 +19,11 @@
         map:uiZoomControls="true"
         map:uiRotateGestures="true"
         map:cameraTilt="0"
-        tools:context=".MapsActivity"
-        />
+        tools:context=".MapsActivity">
+        <Button android:layout_height="30px" android:layout_width="30px"/>
+    </fragment>
+
+
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +32,7 @@
             android:id="@+id/x"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="abcdesdffsdfsdfsdf"
+            android:text=""
             />
     </GridLayout>
     <GridLayout
@@ -46,13 +50,6 @@
 
         </Button>
         <Button
-            android:id="@+id/friends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="친구">
-
-        </Button>
-        <Button
             android:id="@+id/cummunity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +60,14 @@
             android:id="@+id/option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="설정">
+            android:text="환경설정">
+
+        </Button>
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시작">
         </Button>
 
 
