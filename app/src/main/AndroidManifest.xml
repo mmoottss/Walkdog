@@ -19,9 +19,11 @@
 
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".Maps"
             android:exported="true"
             android:label="activity">
+            <!--// .MapsActivity   ,   .Community   ,-->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
