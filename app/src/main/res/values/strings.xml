@@ -9,4 +9,5 @@
     <string name="communitytext">커뮤니티</string>
     <string name="optiontext">환경설정</string>
     <string name="starttext">시작</string>
+    <string name="walkStart">산책출발</string>
 </resources>
