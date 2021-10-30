@@ -22,10 +22,10 @@
         />
 
     <Button
-        android:id="@+id/btnwrite"
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="등록하기"
+        android:text="저장하기"
         android:textColor="#FFFFFF"
         android:background="#C62828"/>
 
