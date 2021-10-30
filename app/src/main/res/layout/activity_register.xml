@@ -6,12 +6,23 @@
     android:layout_height="match_parent"
     android:backgroundTint="#6DF870">
 
+    <Button
+        android:id="@+id/reg_back"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_weight="0"
+        android:backgroundTint="#6DF870"
+        android:text="←"
+        android:textColor="#000000"
+        android:translationX="-0dp"
+        android:translationY="-15dp" />
+
     <FrameLayout
         android:layout_width="170dp"
         android:layout_height="50dp"
         android:layout_weight="0"
         android:background="#6DF870"
-        android:translationX="120dp">
+        android:translationX="70dp">
 
         <TextView
             android:id="@+id/textView"
@@ -33,7 +44,7 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-130dp"
+        android:translationX="-170dp"
         android:translationY="230dp" />
 
     <FrameLayout
@@ -41,7 +52,7 @@
         android:layout_height="70dp"
         android:animateLayoutChanges="false"
         android:background="#6DF870"
-        android:translationX="-120dp"
+        android:translationX="-160dp"
         android:translationY="220dp">
 
         <FrameLayout
@@ -78,7 +89,7 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-380dp"
+        android:translationX="-420dp"
         android:translationY="310dp" />
 
     <FrameLayout
@@ -87,7 +98,7 @@
         android:layout_weight="0"
         android:animateLayoutChanges="false"
         android:background="#6DF870"
-        android:translationX="-387dp"
+        android:translationX="-427dp"
         android:translationY="305dp">
 
         <FrameLayout
@@ -124,7 +135,7 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-640dp"
+        android:translationX="-670dp"
         android:translationY="400dp" />
 
     <FrameLayout
@@ -133,7 +144,7 @@
         android:layout_weight="0"
         android:animateLayoutChanges="false"
         android:background="#6DF870"
-        android:translationX="-640dp"
+        android:translationX="-680dp"
         android:translationY="395dp">
 
         <FrameLayout
@@ -171,7 +182,7 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
-        android:translationX="-830dp"
+        android:translationX="-870dp"
         android:translationY="500dp" />
 
 </LinearLayout>
