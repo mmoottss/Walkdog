@@ -45,7 +45,7 @@ import java.util.List;
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Button button1,button2,button3;
+    Button button1,button2,button3, button4;
     double longitude,latitude;
     LatLng user_pos, first_pos;
     int start_flag =0, search_day =1;
@@ -108,6 +108,15 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
+            }
+        });
+        button4= findViewById(R.id.option);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setContentView(R.layout.activity_option);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, new option(), null).commit();
             }
         });
     }
