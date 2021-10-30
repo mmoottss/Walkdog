@@ -14,16 +14,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class Writecommunity extends AppCompatActivity {
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
-
-
-
 
     }
 }
