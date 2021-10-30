@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
@@ -29,15 +30,18 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // 뒤로가기 버튼 2번 누를 시 종료
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
             backKeyPressedTime = System.currentTimeMillis();
             Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다. ", Toast.LENGTH_SHORT).show();
             return;
         }
 
-            if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-                finish();
-            }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            // 앱 완전 종료 코드
+            ActivityCompat.finishAffinity(this);
+            System.exit(0);
+        }
     }
 
     @Override
