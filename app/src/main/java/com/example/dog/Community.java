@@ -33,7 +33,7 @@ public class Community extends AppCompatActivity {
 
 
 
-        write_btn=findViewById(R.id.btnwrite);
+        write_btn=findViewById(R.id.btnWrite);
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

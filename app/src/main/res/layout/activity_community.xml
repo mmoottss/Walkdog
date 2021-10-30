@@ -28,7 +28,7 @@
         </ListView>
         <Button
             android:layout_gravity="bottom|end"
-            android:id="@+id/btnwrite"
+            android:id="@+id/btnWrite"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@drawable/solid_button"
