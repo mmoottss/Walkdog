@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="마이페이지">
+        <PreferenceScreen
+            android:key="Log"
+            android:title="계정 관리">
+        </PreferenceScreen>
+        <!--계정 -> 프로필(견주, 반려동물)변경, 로그아웃, 탈퇴-->
+        <Preference
+            app:fragment="com.example.SyncFragment"
+            android:key="Route"
+            android:title="경로 관리"/>
+        <!--경로 초기화, 데이터 삭제, (+)견종 필터링 등등...-->
+        <PreferenceScreen
+            android:key="Alarm"
+            android:title="알림 설정" >
+            <SwitchPreference
+                android:title="알림 받기"
+                android:defaultValue="true"
+                android:key="Ringing"/>
+            <!--알림 받기 true 시 하단 표시-->
+            <SwitchPreference
+                android:key="sound"
+                android:title="소리"
+                android:dependency="Ringing"/>
+            <SwitchPreference
+                android:key="message"
+                android:title="진동"
+                android:dependency="Ringing"/>
+        </PreferenceScreen>
+        <!--알림 -> 알림on/off, 알림 on 시 소리, 진동설정,
+                    각종 알림on/off(ex/커뮤니티글 관련 등)-->
+        <SwitchPreference
+            android:key="night_mode"
+            android:defaultValue="false"
+            android:title="야간 모드"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="앱 정보">
+        <Preference
+            app:fragment="com.example.StncFragment"
+            android:key="developers"
+            android:title="개발자 정보"></Preference>
+        <Preference
+            android:key="version"
+            android:title="앱 버전"></Preference>
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>
