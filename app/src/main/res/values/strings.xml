@@ -5,4 +5,8 @@
     <string name="hint_id">아이디를 입력하세요.</string>
     <string name="hint_pass">비밀번호를 입력하세요.</string>
     <string name="hint_nickname">닉네임을 입력하세요.</string>
+    <string name="maptext">지도</string>
+    <string name="communitytext">커뮤니티</string>
+    <string name="optiontext">환경설정</string>
+    <string name="starttext">시작</string>
 </resources>
