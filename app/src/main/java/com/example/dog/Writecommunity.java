@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -25,10 +24,8 @@ public class Writecommunity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
 
-        edtContent = (EditText) findViewById(R.id.content_et);
-        btnSave = (Button) findViewById(R.id.btnSave);
+
 
 
     }
-
 }
