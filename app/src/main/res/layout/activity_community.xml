@@ -1,21 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dog.Community">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+    tools:context="com.example.dog.Community"
+    android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:id="@+id/bottom"
-            app:itemBackground="@drawable/ic_launcher_background"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menu_bottom"
+            android:orientation="horizontal">
+<!--        // 프로필 사진 넣을 수 있으면 넣고(안되면 없애기),
+               글쓰기도 된다면 오른쪽 상단으로-->
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id = "@+id/logo"
+                    android:layout_gravity="left"/>
 
-            />
+        </LinearLayout>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        </ListView>
+        <Button
+            android:layout_gravity="bottom|end"
+            android:id="@+id/btnwrite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/solid_button"
+            android:layout_margin="10dp"
+            android:text="+" />
 
-</FrameLayout>
+        <LinearLayout
+            android:background="#111111"
+            android:id="@+id/lin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:id="@+id/mapmenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/maptext">
+
+                </Button>
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_weight="1"
+                    android:id="@+id/cummunity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/communitytext">
+
+                </Button>
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_weight="1"
+                    android:id="@+id/option"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/optiontext">
+
+                </Button>
+
+
+        </LinearLayout>
+
+</LinearLayout>

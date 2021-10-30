@@ -44,6 +44,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Register.this, Login.class);
+                finishActivity(0);
                 startActivity(intent);
             }
         });
@@ -86,10 +87,6 @@ public class Register extends AppCompatActivity {
                 queue.add(registerRequest);
             }
         });
-    }
-
-    @Override
-    public void onBackPressed() {
     }
 
     class RegisterRequest extends StringRequest {
