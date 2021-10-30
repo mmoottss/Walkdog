@@ -26,7 +26,7 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
 
     private EditText reg_id, reg_pass, reg_nickname;
-    private Button register_confirm;
+    private Button register_confirm, btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,18 @@ public class Register extends AppCompatActivity {
         reg_id = findViewById(R.id.reg_id);
         reg_pass = findViewById(R.id.reg_pass);
         reg_nickname = findViewById(R.id.reg_nickcname);
+
+        //뒤로가기 버튼을 눌렀을 때
+        btn_back = findViewById(R.id.reg_back);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Register.this, Login.class);
+                finishActivity(0);
+                startActivity(intent);
+            }
+        });
+
 
         // 회원가입 버튼을 눌렀을 때
         register_confirm = findViewById(R.id.register_confirm);
