@@ -18,61 +18,59 @@
                     android:layout_height="50dp"
                     android:id = "@+id/logo"
                     android:layout_gravity="left"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/test"/>
 
         </LinearLayout>
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1">
+        </ListView>
+        <Button
+            android:layout_gravity="bottom|end"
+            android:id="@+id/btnwrite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/solid_button"
+            android:layout_margin="10dp"
+            android:text="+" />
 
-        <GridLayout
-            android:id="@+id/grid"
+        <LinearLayout
+            android:background="#111111"
+            android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="5"
-            android:rowCount="1"
             android:layout_alignParentBottom="true">
+
                 <Button
+                    style="?android:attr/borderlessButtonStyle"
                     android:id="@+id/mapmenu"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="지도">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="@string/maptext">
 
                 </Button>
                 <Button
-                    android:id="@+id/friends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="친구">
-
-                </Button>
-                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_weight="1"
                     android:id="@+id/cummunity"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="커뮤니티">
+                    android:layout_height="match_parent"
+                    android:text="@string/communitytext">
 
                 </Button>
                 <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_weight="1"
                     android:id="@+id/option"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="설정">
-                </Button>
-                <Button
-                    android:id="@+id/btnwrite"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:text="+">
+                    android:layout_height="match_parent"
+                    android:text="@string/optiontext">
+
                 </Button>
 
 
-        </GridLayout>
+        </LinearLayout>
 
 </LinearLayout>

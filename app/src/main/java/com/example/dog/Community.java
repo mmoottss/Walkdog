@@ -11,13 +11,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Community extends AppCompatActivity {
 
-    Button write_btn;
+    Button write_btn,button1,button2,button3;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
+
+        button1=findViewById(R.id.mapmenu);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Community.this, Maps.class);
+                startActivity(intent);
+            }
+        });
+
+
+        button3= findViewById(R.id.option);
+
+
 
         write_btn=findViewById(R.id.btnwrite);
         write_btn.setOnClickListener(new View.OnClickListener() {
@@ -29,4 +43,7 @@ public class Community extends AppCompatActivity {
             }
         });
         }
+
+
+
     }
