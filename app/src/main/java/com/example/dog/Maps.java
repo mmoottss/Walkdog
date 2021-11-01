@@ -43,7 +43,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
+    private static final double matrix=20000;
     private GoogleMap mMap;
     Button Start_button, community_button, location_button,load_button,option_button;
     double longitude,latitude;
@@ -70,31 +72,25 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 if (start_flag == 0) {
                     start_flag =1;
                     if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
-                            android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Maps.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(Maps.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                     }
                     //권한획득시
                     else {
-                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, networkLocationListener);
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+                        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         //현재위치 정보 존재
                         if(location!=null) {
-                            longitude = Math.round(location.getLongitude() * 100000) / 100000.0;
-                            latitude = Math.round(location.getLatitude() * 100000) / 100000.0;
+                            longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                            latitude = Math.round(location.getLatitude() * matrix) / matrix;
                             user_pos = new LatLng(latitude, longitude);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, networkLocationListener);
                         }
                         //현재위치 정보 없을시 현재위치정보 받기
                         else{
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0,new LocationListener() {
-                                public void onLocationChanged(@NonNull Location location) {
-                                    lm.removeUpdates(this);
-                                    longitude = Math.round(location.getLongitude()*100000)/100000.0;
-                                    latitude = Math.round(location.getLatitude()*100000)/100000.0;
-                                    user_pos = new LatLng(latitude, longitude);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                                }
-                            });
+                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, networkLocationListener);
                             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
                         }
                     }
@@ -102,7 +98,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 //산책종료
                 else {
                     start_flag =0;
-                    lm.removeUpdates(gpsLocationListener);
+                    lm.removeUpdates(networkLocationListener);
                 }
             }
         });
@@ -118,16 +114,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 //권한획득시
                 else {
-                    Toast.makeText(getApplicationContext(), "load on", Toast.LENGTH_SHORT).show();
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
-                        public void onLocationChanged(@NonNull Location location) {
-                            longitude = Math.round(location.getLongitude() * 100000) / 100000.0;
-                            latitude = Math.round(location.getLatitude() * 100000) / 100000.0;
-                            user_pos = new LatLng(latitude, longitude);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                            lm.removeUpdates(this);
-                        }
-                    });
+                    lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, networkLocationListener,null);
+                    lm.requestSingleUpdate(LocationManager.GPS_PROVIDER, gpsLocationListener,null);
+                    Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                    latitude = Math.round(location.getLatitude() * matrix) / matrix;
+                    user_pos = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
+
                 }
             }
         });
@@ -160,12 +154,30 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     }
 
 
+    final LocationListener networkLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            if(start_flag ==1) {
+                LatLng tmp_user_pos = user_pos;
+                longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                latitude = Math.round(location.getLatitude() * matrix) / matrix;
+                user_pos = new LatLng(latitude, longitude);
+                PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
+                Polyline polyline = mMap.addPolyline(polylineOptions);
+                polyline.setWidth(20f);
+                FileWrite(tmp_user_pos, user_pos);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
+            }
+        }
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+    };
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             if(start_flag ==1) {
                 LatLng tmp_user_pos = user_pos;
-                longitude = Math.round(location.getLongitude() * 100000) / 100000.0;
-                latitude = Math.round(location.getLatitude() * 100000) / 100000.0;
+                longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                latitude = Math.round(location.getLatitude() * matrix) / matrix;
                 user_pos = new LatLng(latitude, longitude);
                 PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
                 Polyline polyline = mMap.addPolyline(polylineOptions);
@@ -187,18 +199,18 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             return;
         }
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setMyLocationButtonEnabled(false);
+        uiSettings.setMyLocationButtonEnabled(true);
         if(location==null){
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first_pos,18));
         }
         else {
 
-            longitude = Math.round(location.getLongitude()*100000)/100000.0;
-            latitude = Math.round(location.getLatitude()*100000)/100000.0;
+            longitude = Math.round(location.getLongitude()*matrix)/matrix;
+            latitude = Math.round(location.getLatitude()*matrix)/matrix;
             user_pos = new LatLng(latitude, longitude);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos,18));
         }
@@ -373,3 +385,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         return count;
     }
 }
+//private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+//@Override
+//public void onMyLocationChange(Location location) {
+//    LatLng loc = new LatLng(location.getLatitude(), location.getLongitude()); }
+//}
+//};
