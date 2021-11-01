@@ -31,11 +31,7 @@ public class option extends PreferenceFragmentCompat {
     SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if(prefs.getBoolean("Ringing", false)){
-                alarmscreen.setSummary("사용");
-            }else{
-                alarmscreen.setSummary("사용안함");
-            }
+
         }
     };
 }
