@@ -19,14 +19,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Polyline;
@@ -50,15 +49,13 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final double matrix=20000;
     private static final int distance=3;
     private GoogleMap mMap;
+    TextView txv;
     Button Start_button, community_button, location_button,load_button,option_button;
     double longitude,latitude;
     LatLng user_pos, first_pos;
-    int start_flag =0,load_flag=0, search_day =0;
+    int start_flag =0,load_flag=0, search_day =0,debug=0;
     List<Polyline> array = new ArrayList<>();
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+    protected void onDestroy() {super.onDestroy();}
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
@@ -68,6 +65,12 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
         first_pos = new LatLng(37, 128);
         Start_button = findViewById(R.id.start);
+        location_button = findViewById(R.id.location);
+        load_button=findViewById(R.id.load);
+        community_button = findViewById(R.id.cummunity);
+        option_button = findViewById(R.id.option);
+
+        txv=findViewById(R.id.debug);
         // 시작버튼, 본인좌표로 이동
         Start_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
@@ -104,7 +107,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
         // 유저좌표이동
-        location_button = findViewById(R.id.location);
         location_button.setOnClickListener(new View.OnClickListener() {
             @Override
             //권한체크
@@ -126,7 +128,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
         //이전산책경로가져오기
-        load_button=findViewById(R.id.load);
         load_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +135,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
         //하단바 커뮤니티로 이동
-        community_button = findViewById(R.id.cummunity);
         community_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +143,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
         //하단바 설정창으로 이동
-        option_button = findViewById(R.id.option);
         option_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +151,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
     }
+
+    //gps리스너
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             if(start_flag ==1) {
@@ -164,12 +165,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 polyline.setWidth(20f);
                 FileWrite(tmp_user_pos, user_pos);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
+                txv.setText(""+debug++);
             }
         }
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     };
+    //지도시작
     public void onMapReady(@NonNull final GoogleMap googleMap) {
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -195,6 +198,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos,18));
         }
     }
+    // 경로 저장
     void FileWrite(LatLng tmp_location,LatLng location) {
 
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -228,9 +232,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
     }
+    // 저장경로 읽기
     void FileRead(){
         if(load_flag==0) {
-            Toast.makeText(this, "load on", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "이전 경로 표시", Toast.LENGTH_SHORT).show();
             load_flag=1;
             String line; // 한줄씩 읽기
             File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/loc_data"); // 저장 경로
@@ -238,6 +243,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             if (!saveFile.exists()) { // 폴더 없을 경우
                 saveFile.mkdir(); // 폴더 생성
             }
+            //파일검색, 경로표시
             for (int i = 0; i < search_day + 1; i++) {
                 try {
                     long now = System.currentTimeMillis(); // 현재시간 받아오기
@@ -339,7 +345,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         }
         else{
             load_flag=0;
-            Toast.makeText(this, "remove on", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "이전 경로 제거", Toast.LENGTH_SHORT).show();
             for(int i =array.size()-1;i>-1;i--) {
                 array.get(i).remove();
                 array.remove(i);
@@ -347,6 +353,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
         }
     }
+    //폴리라인 색상결정
     int polyColor(int count){
         switch(count){
             case 0: return 0xffFF66B2;
@@ -361,6 +368,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             default:return 0xff330020;
         }
     }
+    //겹치는 경로 개수결정
     int polyCompare(Polyline poly){
         int count=0;
         for(int i=0;i<array.size();i++){
