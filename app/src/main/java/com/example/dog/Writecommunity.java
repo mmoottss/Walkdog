@@ -41,5 +41,6 @@ public class Writecommunity extends AppCompatActivity {
             imageview.setImageURI(selectedImageUri);
         }
     }
+    // 우선은 저장해서 커뮤니티 메인에서 볼 수 있게 하기. 그 후에 서버연결 같이하기.
 
 }
