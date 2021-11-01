@@ -11,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Community extends AppCompatActivity {
 
-    Button write_btn,button1,button2,button3;
+    Button write_btn,map_btn,community_btn,option_btn;
 
 
     @Override
@@ -19,8 +19,8 @@ public class Community extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
 
-        button1=findViewById(R.id.mapmenu);
-        button1.setOnClickListener(new View.OnClickListener() {
+        map_btn=findViewById(R.id.mapmenu);
+        map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Community.this, Maps.class);
@@ -28,9 +28,13 @@ public class Community extends AppCompatActivity {
             }
         });
 
+        option_btn = findViewById(R.id.option);
+        option_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        button3= findViewById(R.id.option);
-
+            }
+        });
 
 
         write_btn=findViewById(R.id.btnWrite);
