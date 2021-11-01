@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.LatLng;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -43,12 +44,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
+    private static final String TAG = "Maps";
+    private static final double matrix=20000;
+    private static final int distance=3;
     private GoogleMap mMap;
     Button Start_button, community_button, location_button,load_button,option_button;
     double longitude,latitude;
     LatLng user_pos, first_pos;
-    int start_flag =0,load_flag=0, search_day =2;
+    int start_flag =0,load_flag=0, search_day =0;
     List<Polyline> array = new ArrayList<>();
     @Override
     protected void onDestroy() {
@@ -70,32 +75,24 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 if (start_flag == 0) {
                     start_flag =1;
                     if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
-                            android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Maps.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(Maps.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                     }
                     //권한획득시
                     else {
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, distance, gpsLocationListener);
                         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                         //현재위치 정보 존재
                         if(location!=null) {
-                            longitude = Math.round(location.getLongitude() * 100000) / 100000.0;
-                            latitude = Math.round(location.getLatitude() * 100000) / 100000.0;
+                            longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                            latitude = Math.round(location.getLatitude() * matrix) / matrix;
                             user_pos = new LatLng(latitude, longitude);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, distance, gpsLocationListener);
                         }
                         //현재위치 정보 없을시 현재위치정보 받기
                         else{
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0,new LocationListener() {
-                                public void onLocationChanged(@NonNull Location location) {
-                                    lm.removeUpdates(this);
-                                    longitude = Math.round(location.getLongitude()*100000)/100000.0;
-                                    latitude = Math.round(location.getLatitude()*100000)/100000.0;
-                                    user_pos = new LatLng(latitude, longitude);
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                                }
-                            });
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, distance, gpsLocationListener);
                         }
                     }
                 }
@@ -118,16 +115,13 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 //권한획득시
                 else {
-                    Toast.makeText(getApplicationContext(), "load on", Toast.LENGTH_SHORT).show();
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, new LocationListener() {
-                        public void onLocationChanged(@NonNull Location location) {
-                            longitude = Math.round(location.getLongitude() * 100000) / 100000.0;
-                            latitude = Math.round(location.getLatitude() * 100000) / 100000.0;
-                            user_pos = new LatLng(latitude, longitude);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                            lm.removeUpdates(this);
-                        }
-                    });
+                    lm.requestSingleUpdate(LocationManager.GPS_PROVIDER, gpsLocationListener,null);
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                    latitude = Math.round(location.getLatitude() * matrix) / matrix;
+                    user_pos = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
+
                 }
             }
         });
@@ -153,17 +147,17 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         option_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setContentView(R.layout.activity_option);
+                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
             }
         });
     }
-
-
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             if(start_flag ==1) {
                 LatLng tmp_user_pos = user_pos;
-                longitude = Math.round(location.getLongitude() * 100000) / 100000.0;
-                latitude = Math.round(location.getLatitude() * 100000) / 100000.0;
+                longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                latitude = Math.round(location.getLatitude() * matrix) / matrix;
                 user_pos = new LatLng(latitude, longitude);
                 PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
                 Polyline polyline = mMap.addPolyline(polylineOptions);
@@ -189,14 +183,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setMyLocationButtonEnabled(false);
+        uiSettings.setMyLocationButtonEnabled(true);
         if(location==null){
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first_pos,18));
         }
         else {
 
-            longitude = Math.round(location.getLongitude()*100000)/100000.0;
-            latitude = Math.round(location.getLatitude()*100000)/100000.0;
+            longitude = Math.round(location.getLongitude()*matrix)/matrix;
+            latitude = Math.round(location.getLatitude()*matrix)/matrix;
             user_pos = new LatLng(latitude, longitude);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos,18));
         }
@@ -213,7 +207,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
         } else {
-            String str = tmp_location+"-"+location;
+            String str = tmp_location+"->"+location;
             File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/loc_data"); // 저장 경로
             if (!saveFile.exists()) { // 폴더 없을 경우
                 saveFile.mkdir(); // 폴더 생성
@@ -254,80 +248,86 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                     String m = nowTime.substring(4, 6);
                     String d = nowTime.substring(6, 8);
                     d = Integer.toString(Integer.parseInt(d) - i);
-
                     if (Integer.parseInt(d) < 1) {//0일이하일때
-                        switch (Integer.parseInt(nowTime.substring(5, 7))) {
+                        switch (Integer.parseInt(nowTime.substring(4, 6))) {
                             case 1:
-                                d = Integer.toString(31 - Integer.parseInt(d));
+                                d = Integer.toString(31 + Integer.parseInt(d));
                                 m = "12";
                                 y = Integer.toString(Integer.parseInt(y) - 1);
                                 break;
                             case 2:
-                                d = Integer.toString(28 - Integer.parseInt(d));
-                                m = "1";
+                                d = Integer.toString(28 + Integer.parseInt(d));
+                                m = "01";
                                 break;
                             case 3:
-                                d = Integer.toString(31 - Integer.parseInt(d));
-                                m = "2";
+                                d = Integer.toString(31 + Integer.parseInt(d));
+                                m = "02";
                                 break;
                             case 4:
-                                d = Integer.toString(30 - Integer.parseInt(d));
-                                m = "3";
+                                d = Integer.toString(30 + Integer.parseInt(d));
+                                m = "03";
                                 break;
                             case 5:
-                                d = Integer.toString(31 - Integer.parseInt(d));
-                                m = "4";
+                                d = Integer.toString(31 + Integer.parseInt(d));
+                                m = "04";
                                 break;
                             case 6:
-                                d = Integer.toString(30 - Integer.parseInt(d));
-                                m = "5";
+                                d = Integer.toString(30 + Integer.parseInt(d));
+                                m = "05";
                                 break;
                             case 7:
-                                d = Integer.toString(31 - Integer.parseInt(d));
-                                m = "6";
+                                d = Integer.toString(31 + Integer.parseInt(d));
+                                m = "06";
                                 break;
                             case 8:
-                                d = Integer.toString(31 - Integer.parseInt(d));
-                                m = "7";
+                                d = Integer.toString(31 + Integer.parseInt(d));
+                                m = "07";
                                 break;
                             case 9:
-                                d = Integer.toString(30 - Integer.parseInt(d));
-                                m = "8";
+                                d = Integer.toString(30 + Integer.parseInt(d));
+                                m = "08";
                                 break;
                             case 10:
-                                d = Integer.toString(31 - Integer.parseInt(d));
-                                m = "9";
+                                d = Integer.toString(31 + Integer.parseInt(d));
+                                m = "09";
                                 break;
                             case 11:
-                                d = Integer.toString(30 - Integer.parseInt(d));
+                                d = Integer.toString(30 + Integer.parseInt(d));
                                 m = "10";
                                 break;
                             case 12:
-                                d = Integer.toString(31 - Integer.parseInt(d));
+                                d = Integer.toString(31 + Integer.parseInt(d));
                                 m = "11";
                                 break;
                         }
                     }
-                    String searchTime = y + m + d;
+                    if(Integer.parseInt(d) < 10)
+                        d="0"+d;
 
+                    Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
+                    String searchTime = y + m + d;
+                    int ia=0;
                     BufferedReader buf = new BufferedReader(new FileReader(saveFile + "/" + searchTime + ".txt"));
                     while ((line = buf.readLine()) != null) {
-                        String[] Loc = line.split("-");
+                        ia++;
+                        String[] Loc = line.split("->");
                         //Loc[0]tmp  Loc[1] user
                         double lat = Double.parseDouble(Loc[0].substring(Loc[0].indexOf("(") + 1, Loc[0].indexOf(",")));
                         double lng = Double.parseDouble(Loc[0].substring(Loc[0].indexOf(",") + 1, Loc[0].indexOf(")")));
-                        LatLng tmp_loc = new LatLng(lat, lng);
+
+                        LatLng start_loc = new LatLng(lat, lng);
                         lat = Double.parseDouble(Loc[1].substring(Loc[1].indexOf("(") + 1, Loc[1].indexOf(",")));
                         lng = Double.parseDouble(Loc[1].substring(Loc[1].indexOf(",") + 1, Loc[1].indexOf(")")));
-                        LatLng use_loc = new LatLng(lat, lng);
+                        LatLng end_loc = new LatLng(lat, lng);
 
                         //동적배열생성
 
-                        PolylineOptions polylineOptions = new PolylineOptions().add(tmp_loc).add(use_loc);
+                        PolylineOptions polylineOptions = new PolylineOptions().add(start_loc).add(end_loc);
                         Polyline polyline = mMap.addPolyline(polylineOptions);
                         polyline.setWidth(20f);
                         polyline.setColor(polyColor(polyCompare(polyline)));
                         array.add(polyline);
+                        Log.d(TAG, ia+"asasa"+polyCompare(polyline));
                     }
                     buf.close();
                 } catch (FileNotFoundException e) {
@@ -340,7 +340,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         else{
             load_flag=0;
             Toast.makeText(this, "remove on", Toast.LENGTH_SHORT).show();
-            for(int i =array.size()-1;i>0;i--) {
+            for(int i =array.size()-1;i>-1;i--) {
                 array.get(i).remove();
                 array.remove(i);
             }
@@ -349,8 +349,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     }
     int polyColor(int count){
         switch(count){
-            case 0: return 0xffFFCCE5;
-            case 1: return 0xffFF99CC;
+            case 0: return 0xffFF66B2;
+            case 1: return 0xff330020;
             case 2: return 0xffFF66B2;
             case 3: return 0xffFF3399;
             case 4: return 0xffFF007F;
@@ -364,7 +364,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     int polyCompare(Polyline poly){
         int count=0;
         for(int i=0;i<array.size();i++){
-            if(array.get(i).getEndCap()==poly.getEndCap()){
+            if(array.get(i).getPoints().get(1).equals(poly.getPoints().get(1))){
                 count++;
             }
         }
