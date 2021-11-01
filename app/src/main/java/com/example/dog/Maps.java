@@ -3,6 +3,7 @@ package com.example.dog;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +19,9 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.Cap;
 import com.google.android.gms.maps.model.LatLng;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Environment;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -46,67 +50,94 @@ import java.util.List;
 
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "Maps";
-    private static final double matrix=20000;
-    private static final int distance=3;
+    private static final double matrix = 10000;
+    private static final int time=100;
+    private static final int distance = 3;
     private GoogleMap mMap;
-    TextView txv;
-    Button Start_button, community_button, location_button,load_button,option_button;
-    double longitude,latitude;
+
+    int start_flag = 0, load_flag = 0, search_day = 0, debug = 0;
+    double longitude, latitude;
     LatLng user_pos, first_pos;
-    int start_flag =0,load_flag=0, search_day =0,debug=0;
+
+    Button start_button, community_button, location_button, load_button, option_button;
+    TextView txv;
+
     List<Polyline> array = new ArrayList<>();
-    protected void onDestroy() {super.onDestroy();}
+    List<Polyline> cur_ary = new ArrayList<>();
+    Cap cap;
+
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         mapFragment.getMapAsync(this);
+        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        cap= new RoundCap();
 
         first_pos = new LatLng(37, 128);
-        Start_button = findViewById(R.id.start);
+        start_button = findViewById(R.id.start);
         location_button = findViewById(R.id.location);
-        load_button=findViewById(R.id.load);
+        load_button = findViewById(R.id.load);
         community_button = findViewById(R.id.cummunity);
         option_button = findViewById(R.id.option);
 
-        txv=findViewById(R.id.debug);
-        // 시작버튼, 본인좌표로 이동
-        Start_button.setOnClickListener(new Button.OnClickListener() {
+        txv = findViewById(R.id.debug);
+        // 산책시작버튼
+        start_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 //산책시작
                 if (start_flag == 0) {
-                    start_flag =1;
+                    start_flag = 1;
                     if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
                             Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions(Maps.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
                     }
                     //권한획득시
                     else {
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, distance, gpsLocationListener);
+                        start_button.setText("산책종료");
+
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, gpsLocationListener);
                         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        //현재위치 정보 존재
-                        if(location!=null) {
-                            longitude = Math.round(location.getLongitude() * matrix) / matrix;
-                            latitude = Math.round(location.getLatitude() * matrix) / matrix;
-                            user_pos = new LatLng(latitude, longitude);
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, distance, gpsLocationListener);
+                        if(location==null){
+                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, gpsLocationListener);
+                            location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if(location == null){
+                                Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
+                                Log.v(TAG,"프로바이더 오류");
+                                return ;
+                            }
                         }
-                        //현재위치 정보 없을시 현재위치정보 받기
-                        else{
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, distance, gpsLocationListener);
-                        }
+                        longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                        latitude = Math.round(location.getLatitude() * matrix) / matrix;
+                        user_pos = new LatLng(latitude, longitude);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
                     }
                 }
                 //산책종료
-                else {
-                    start_flag =0;
+                else if (start_flag == 1) {
+                    start_flag = 2;
+                    start_button.setText("산책 경로 제거");
                     lm.removeUpdates(gpsLocationListener);
+                    lm.removeUpdates(netLocationListener);
+                }
+                //산책한 경로 제거
+                else if (start_flag == 2) {
+                    start_flag = 0;
+                    start_button.setText("산책 시작");
+                    for(int i =cur_ary.size()-1;i>-1;i--) {
+                        cur_ary.get(i).remove();
+                        cur_ary.remove(i);
+                    }
                 }
             }
         });
-        // 유저좌표이동
+        // 유저좌표이동버튼
         location_button.setOnClickListener(new View.OnClickListener() {
             @Override
             //권한체크
@@ -117,15 +148,22 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 //권한획득시
                 else {
-                    lm.requestSingleUpdate(LocationManager.GPS_PROVIDER, gpsLocationListener,null);
+                    lm.requestSingleUpdate(LocationManager.GPS_PROVIDER,SingleListener,null);
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    longitude = Math.round(location.getLongitude() * matrix) / matrix;
-                    latitude = Math.round(location.getLatitude() * matrix) / matrix;
-                    user_pos = new LatLng(latitude, longitude);
+                    if(location==null) {
+                        lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, SingleListener, null);
+                        location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                        if(location == null){
+                            Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
+                            Log.v(TAG,"프로바이더 오류");
+                            return ;
+                        }
+                    }
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-
+                    lm.removeUpdates(SingleListener);
                 }
             }
+
         });
         //이전산책경로가져오기
         load_button.setOnClickListener(new View.OnClickListener() {
@@ -151,9 +189,39 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
     }
+    //단일 리스너
+    final LocationListener SingleListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            longitude = Math.round(location.getLongitude() * matrix) / matrix;
+            latitude = Math.round(location.getLatitude() * matrix) / matrix;
+            user_pos = new LatLng(latitude, longitude);
+        }
+    };
+
 
     //gps리스너
     final LocationListener gpsLocationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            if (start_flag == 1) {
+                LatLng tmp_user_pos = user_pos;
+                longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                latitude = Math.round(location.getLatitude() * matrix) / matrix;
+                user_pos = new LatLng(latitude, longitude);
+                PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
+                Polyline polyline = mMap.addPolyline(polylineOptions);
+                polyline.setWidth(20f);
+                cur_ary.add(polyline);
+                FileWrite(tmp_user_pos, user_pos);
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
+                //디버그
+                txv.setText("" + user_pos + debug++);
+            }
+        }
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+    };
+    //net리스너
+    final LocationListener netLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             if(start_flag ==1) {
                 LatLng tmp_user_pos = user_pos;
@@ -163,32 +231,39 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
                 Polyline polyline = mMap.addPolyline(polylineOptions);
                 polyline.setWidth(20f);
+                cur_ary.add(polyline);
                 FileWrite(tmp_user_pos, user_pos);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                txv.setText(""+debug++);
+                txv.setText(""+user_pos+debug++);
             }
         }
-        @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     };
     //지도시작
     public void onMapReady(@NonNull final GoogleMap googleMap) {
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;}
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, netLocationListener);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
-        uiSettings.setMyLocationButtonEnabled(true);
+        uiSettings.setMyLocationButtonEnabled(false);
         if(location==null){
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first_pos,18));
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, netLocationListener);
+            location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location!=null) {
+                longitude = Math.round(location.getLongitude() * matrix) / matrix;
+                latitude = Math.round(location.getLatitude() * matrix) / matrix;
+                user_pos = new LatLng(latitude, longitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
+            }
+            else {
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first_pos, 18));
+            }
         }
         else {
 
@@ -234,9 +309,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     }
     // 저장경로 읽기
     void FileRead(){
+        //저장경로 표시
         if(load_flag==0) {
-            Toast.makeText(this, "이전 경로 표시", Toast.LENGTH_SHORT).show();
             load_flag=1;
+            Toast.makeText(this, "이전 경로 표시", Toast.LENGTH_SHORT).show();
             String line; // 한줄씩 읽기
             File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/loc_data"); // 저장 경로
 // 폴더 생성
@@ -307,17 +383,16 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                                 break;
                         }
                     }
-                    if(Integer.parseInt(d) < 10)
+                    if(Integer.parseInt(d) < 10){
                         d="0"+d;
-
-                    Toast.makeText(this, d, Toast.LENGTH_SHORT).show();
+                    }
                     String searchTime = y + m + d;
                     int ia=0;
                     BufferedReader buf = new BufferedReader(new FileReader(saveFile + "/" + searchTime + ".txt"));
                     while ((line = buf.readLine()) != null) {
                         ia++;
                         String[] Loc = line.split("->");
-                        //Loc[0]tmp  Loc[1] user
+                        //Loc[0] start  Loc[1] end
                         double lat = Double.parseDouble(Loc[0].substring(Loc[0].indexOf("(") + 1, Loc[0].indexOf(",")));
                         double lng = Double.parseDouble(Loc[0].substring(Loc[0].indexOf(",") + 1, Loc[0].indexOf(")")));
 
@@ -327,13 +402,12 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                         LatLng end_loc = new LatLng(lat, lng);
 
                         //동적배열생성
-
                         PolylineOptions polylineOptions = new PolylineOptions().add(start_loc).add(end_loc);
                         Polyline polyline = mMap.addPolyline(polylineOptions);
                         polyline.setWidth(20f);
                         polyline.setColor(polyColor(polyCompare(polyline)));
+                        polyline.setStartCap(cap);polyline.setEndCap(cap);
                         array.add(polyline);
-                        Log.d(TAG, ia+"asasa"+polyCompare(polyline));
                     }
                     buf.close();
                 } catch (FileNotFoundException e) {
@@ -343,6 +417,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 }
             }
         }
+        //저장경로 삭제
         else{
             load_flag=0;
             Toast.makeText(this, "이전 경로 제거", Toast.LENGTH_SHORT).show();
@@ -356,8 +431,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     //폴리라인 색상결정
     int polyColor(int count){
         switch(count){
-            case 0: return 0xffFF66B2;
-            case 1: return 0xff330020;
+            case 0: return 0xffFFCCE5;
+            case 1: return 0xffFF99CC;
             case 2: return 0xffFF66B2;
             case 3: return 0xffFF3399;
             case 4: return 0xffFF007F;
@@ -372,7 +447,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     int polyCompare(Polyline poly){
         int count=0;
         for(int i=0;i<array.size();i++){
-            if(array.get(i).getPoints().get(1).equals(poly.getPoints().get(1))){
+            if(array.get(i).getPoints().equals(poly.getPoints())){
+                array.get(i).setColor(0x00000000);
                 count++;
             }
         }
