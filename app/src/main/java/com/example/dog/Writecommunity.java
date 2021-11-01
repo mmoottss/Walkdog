@@ -24,6 +24,8 @@ public class Writecommunity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
 
+        
+
 
 
 
