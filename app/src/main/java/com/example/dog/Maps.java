@@ -371,9 +371,3 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         return count;
     }
 }
-//private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-//@Override
-//public void onMyLocationChange(Location location) {
-//    LatLng loc = new LatLng(location.getLatitude(), location.getLongitude()); }
-//}
-//};
