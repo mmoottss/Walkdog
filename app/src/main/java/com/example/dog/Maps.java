@@ -147,10 +147,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 //권한획득시
                 else {
-                    lm.requestSingleUpdate(LocationManager.GPS_PROVIDER,SingleListener,null);
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, SingleListener);
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     if(location==null) {
-                        lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, SingleListener, null);
+                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, SingleListener);
                         location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if(location == null){
                             Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
@@ -194,8 +194,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             longitude = Math.round(location.getLongitude() * matrix) / matrix;
             latitude = Math.round(location.getLatitude() * matrix) / matrix;
             user_pos = new LatLng(latitude, longitude);
-            final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            lm.removeUpdates(SingleListener);
         }
     };
 
@@ -242,14 +240,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;}
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, netLocationListener);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, SingleListener);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);
         if(location==null){
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, netLocationListener);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, SingleListener);
             location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if(location!=null) {
                 longitude = Math.round(location.getLongitude() * matrix) / matrix;
