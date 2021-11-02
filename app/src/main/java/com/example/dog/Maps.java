@@ -65,7 +65,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     List<Polyline> array = new ArrayList<>();
     List<Polyline> cur_ary = new ArrayList<>();
     Cap cap;
-
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -159,8 +158,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                             return ;
                         }
                     }
+                    Toast.makeText(getApplicationContext(),""+location.getTime(), Toast.LENGTH_SHORT).show();
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                    lm.removeUpdates(SingleListener);
                 }
             }
 
@@ -195,14 +194,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             longitude = Math.round(location.getLongitude() * matrix) / matrix;
             latitude = Math.round(location.getLatitude() * matrix) / matrix;
             user_pos = new LatLng(latitude, longitude);
+            final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            lm.removeUpdates(SingleListener);
         }
     };
-
 
     //gps리스너
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-            if (start_flag == 1) {
                 LatLng tmp_user_pos = user_pos;
                 longitude = Math.round(location.getLongitude() * matrix) / matrix;
                 latitude = Math.round(location.getLatitude() * matrix) / matrix;
@@ -215,7 +214,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
                 //디버그
                 txv.setText("" + user_pos + debug++);
-            }
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
@@ -223,7 +221,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     //net리스너
     final LocationListener netLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-            if(start_flag ==1) {
                 LatLng tmp_user_pos = user_pos;
                 longitude = Math.round(location.getLongitude() * matrix) / matrix;
                 latitude = Math.round(location.getLatitude() * matrix) / matrix;
@@ -235,7 +232,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 FileWrite(tmp_user_pos, user_pos);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
                 txv.setText(""+user_pos+debug++);
-            }
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
