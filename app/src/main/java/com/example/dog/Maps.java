@@ -50,7 +50,7 @@ import java.util.List;
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "Maps";
     private static final int TIME =1000;
-    private static final int DISTANCE = 2;
+    private static final int DISTANCE = 4;
     private static final double CHECK_POINT = 0.000025;
     private static final int CHECK_TIME = 60000;// 1000당 1초
     private GoogleMap mMap;
@@ -61,6 +61,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     Cap cap= new RoundCap();
     Button start_button, community_button, location_button, load_button, option_button;
     TextView txv;
+    LocationManager lm;
 
     List<List<Polyline>> ary= new ArrayList<>();
     List<List<Long>> timeline= new ArrayList<>();
@@ -77,7 +78,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         first_pos = new LatLng(37, 128);
         start_button = findViewById(R.id.start);
@@ -243,7 +244,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;}
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
