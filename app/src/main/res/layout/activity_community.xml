@@ -5,67 +5,81 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.dog.Community"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.dog.Community">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#6DF870"
             android:orientation="horizontal">
-<!--        // 프로필 사진 넣을 수 있으면 넣고(안되면 없애기),
+                <!--        // 프로필 사진 넣을 수 있으면 넣고(안되면 없애기),
                글쓰기도 된다면 오른쪽 상단으로-->
                 <ImageView
+                    android:id="@+id/logo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:id = "@+id/logo"
-                    android:layout_gravity="left"/>
+                    android:layout_gravity="left" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:text="walkdog 커뮤니티"
+                    android:textColor="#000000"
+                    android:textSize="30sp" />
 
         </LinearLayout>
+
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-        </ListView>
+            android:layout_weight="1"></ListView>
+
         <Button
-            android:layout_gravity="bottom|end"
             android:id="@+id/btnWrite"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/solid_button"
+            android:layout_gravity="bottom|end"
             android:layout_margin="10dp"
+            android:background="@drawable/solid_button"
             android:text="+" />
 
         <LinearLayout
-            android:background="#111111"
             android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:background="#111111">
 
                 <Button
-                    style="?android:attr/borderlessButtonStyle"
                     android:id="@+id/mapmenu"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/maptext">
 
                 </Button>
+
                 <Button
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_weight="1"
                     android:id="@+id/cummunity"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:text="@string/communitytext">
 
                 </Button>
+
                 <Button
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_weight="1"
                     android:id="@+id/option"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:text="@string/optiontext">
 
                 </Button>
