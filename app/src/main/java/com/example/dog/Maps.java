@@ -24,7 +24,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Debug;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
@@ -48,17 +47,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "Maps";
-    private static final int time=1000;
-    private static final int distance = 1;
+    private static final int TIME =1000;
+    private static final int DISTANCE = 2;
+    private static final double CHECK_POINT = 0.000025;
+    private static final int CHECK_TIME = 60000;// 1000당 1초
     private GoogleMap mMap;
 
-    int start_flag = 0, load_flag = 0, search_day = 0, debug = 0;
+    int start_flag = 0, load_flag = 0, search_day = 1;
     double longitude, latitude;
     LatLng user_pos, first_pos;
-
+    Cap cap= new RoundCap();
     Button start_button, community_button, location_button, load_button, option_button;
     TextView txv;
 
@@ -66,7 +66,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     List<List<Long>> timeline= new ArrayList<>();
 
     List<Polyline> cur_ary = new ArrayList<>();
-    Cap cap;
+
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -79,16 +79,12 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         mapFragment.getMapAsync(this);
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        cap= new RoundCap();
-
         first_pos = new LatLng(37, 128);
         start_button = findViewById(R.id.start);
         location_button = findViewById(R.id.location);
         load_button = findViewById(R.id.load);
         community_button = findViewById(R.id.cummunity);
         option_button = findViewById(R.id.option);
-
-        txv = findViewById(R.id.debug);
         // 산책시작버튼
         start_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
@@ -102,11 +98,11 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                     //권한획득시
                     else {
                         start_button.setText("산책종료");
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, gpsLocationListener);
+                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, gpsLocationListener);
                         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                         if(location==null){
-                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, gpsLocationListener);
+                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, gpsLocationListener);
                             location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                             if(location == null){
                                 Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
@@ -151,11 +147,11 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 //권한획득시
                 else {
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, SingleListener);lm.removeUpdates(SingleListener);
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
 
                     if(location==null) {
                         location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, SingleListener);lm.removeUpdates(SingleListener);
+                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
 
                         if(location == null){
                             Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
@@ -163,7 +159,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                             return ;
                         }
                     }
-                    Toast.makeText(getApplicationContext(),""+location.getTime(), Toast.LENGTH_SHORT).show();
+                    longitude = location.getLongitude();
+                    latitude =location.getLatitude();
+                    user_pos = new LatLng(latitude, longitude);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
                 }
             }
@@ -205,18 +203,18 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     //gps리스너
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-                LatLng tmp_user_pos = user_pos;
+            LatLng tmp_user_pos = user_pos;
             longitude = location.getLongitude();
-            latitude =location.getLatitude();
-                user_pos = new LatLng(latitude, longitude);
-                PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
-                Polyline polyline = mMap.addPolyline(polylineOptions);
-                polyline.setWidth(20f);
-                cur_ary.add(polyline);
-                FileWrite(tmp_user_pos, user_pos,location.getTime());
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-                //디버그
-                txv.setText("" + user_pos + debug++);
+            latitude = location.getLatitude();
+            user_pos = new LatLng(latitude, longitude);
+            PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
+            Polyline polyline = mMap.addPolyline(polylineOptions);
+            polyline.setWidth(20f);
+            polyline.setEndCap(cap);
+            polyline.setStartCap(cap);
+            cur_ary.add(polyline);
+            FileWrite(tmp_user_pos, user_pos, location.getTime());
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
@@ -236,7 +234,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             cur_ary.add(polyline);
             FileWrite(tmp_user_pos, user_pos, location.getTime());
             mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
-            txv.setText("" + user_pos + debug++);
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
@@ -247,14 +244,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;}
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, time, distance, SingleListener);lm.removeUpdates(SingleListener);
+        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);
         if(location==null){
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, time, distance, SingleListener);lm.removeUpdates(SingleListener);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
             location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             if(location!=null) {
@@ -313,7 +310,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         //저장경로 표시
         if(load_flag==0) {
             load_flag=1;
-            Toast.makeText(this, "이전 경로 표시", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, search_day+"일전까지의 경로 표시", Toast.LENGTH_SHORT).show();
             String line; // 한줄씩 읽기
             File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/loc_data"); // 저장 경로
 // 폴더 생성
@@ -432,7 +429,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         //저장경로 삭제
         else{
             load_flag=0;
-            Toast.makeText(this, "이전 경로 제거", Toast.LENGTH_SHORT).show();
             for(int j=ary.size()-1;j>-1;j--) {
                 for (int i =ary.get(j).size()-1; i > -1; i--) {
                     ary.get(j).get(i).remove();
@@ -472,9 +468,12 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                         location_equal(ary.get(j).get(i).getPoints().get(1), poly.getPoints().get(0)) ||
                         location_equal(ary.get(j).get(i).getPoints().get(1), poly.getPoints().get(1))) {
                     for (int k = 0; k < time_ary.size(); k++) {
-                        if (timeline.get(j).get(i) < time_ary.get(k) + 20000 &&
-                                timeline.get(j).get(i) > time_ary.get(k) - 20000) {
-                            ary.get(j).get(i).setColor(polyColor(count));
+                        if (timeline.get(j).get(i) < time_ary.get(k) + CHECK_TIME &&
+                                timeline.get(j).get(i) > time_ary.get(k) - CHECK_TIME) {
+                            if(ary.get(j).get(i).getColor()>polyColor(count)) {
+                                ary.get(j).get(i).setColor(polyColor(count));
+                                ary.get(j).get(i).setZIndex(count);
+                            }
                             time_flag = 1;
                         }
                     }
@@ -485,14 +484,15 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                     count++;
                     time_ary.add(timeline.get(j).get(i));
                     ary.get(j).get(i).setColor(polyColor(count));
+                    poly.setZIndex(count);
                 }
             }
         }
         return count;
     }
     boolean location_equal(LatLng point1,LatLng point2){
-        if(point1.longitude > point2.longitude-0.00005 && point1.longitude < point2.longitude+0.00005){
-            if(point1.latitude > point2.latitude-0.00005 && point1.latitude < point2.latitude+0.00005){
+        if(point1.longitude > point2.longitude- CHECK_POINT && point1.longitude < point2.longitude+ CHECK_POINT){
+            if(point1.latitude > point2.latitude- CHECK_POINT && point1.latitude < point2.latitude+ CHECK_POINT){
                 return true;
             }
         }
