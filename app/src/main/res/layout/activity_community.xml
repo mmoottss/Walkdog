@@ -8,14 +8,6 @@
     android:orientation="vertical"
     tools:context="com.example.dog.Community">
 
-        <TextView
-            android:id="@+id/o"
-            android:layout_width="match_parent"
-            android:layout_height="287dp"
-            android:text="TextView"
-            android:textColor="#000000"
-            android:textSize="100sp" />
-
         <Button
             android:id="@+id/btnWrite"
             android:layout_width="50dp"
@@ -64,5 +56,13 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/o"
+            android:layout_width="match_parent"
+            android:layout_height="287dp"
+            android:text="TextView"
+            android:textColor="#000000"
+            android:textSize="100sp" />
 
 </LinearLayout>

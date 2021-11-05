@@ -1,11 +1,13 @@
 package com.example.dog;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -74,6 +76,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
@@ -178,6 +181,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         community_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
                 Intent intent = new Intent(Maps.this, Community.class);
                 startActivity(intent);
             }
@@ -497,5 +501,29 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
         return false;
+    }
+
+    //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("안내");
+        builder.setMessage("로그아웃 하시겠습니까?");
+
+        builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+
+        });
+        builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                Intent intent = new Intent(Maps.this, Login.class);
+                startActivity(intent);
+            }
+        });
+        builder.create().show();
     }
 }

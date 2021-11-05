@@ -1,5 +1,6 @@
 package com.example.dog;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -15,6 +17,7 @@ public class Writecommunity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
+
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -46,4 +49,27 @@ public class Writecommunity extends AppCompatActivity {
         }
     }
 
+    //뒤로가기 누를 시 글 작성을 취소하시겠습니까? 출력
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("안내");
+        builder.setMessage("글 작성을 취소하시겠습니까?");
+
+        builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+
+        });
+        builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                Intent intent = new Intent(Writecommunity.this, Community.class);
+                startActivity(intent);
+            }
+        });
+        builder.create().show();
+    }
 }
