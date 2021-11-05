@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
@@ -7,33 +7,36 @@
     android:layout_height="match_parent"
     tools:context="com.example.dog.Community"
     android:orientation="vertical">
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-<!--        // 프로필 사진 넣을 수 있으면 넣고(안되면 없애기),
-               글쓰기도 된다면 오른쪽 상단으로-->
+&lt;!&ndash;        // 프로필 사진 넣을 수 있으면 넣고(안되면 없애기),
+               글쓰기도 된다면 오른쪽 상단으로&ndash;&gt;
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:id = "@+id/logo"
                     android:layout_gravity="left"/>
 
-        </LinearLayout>
-        <ListView
+        </LinearLayout>-->
+
+        <ScrollView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-        </ListView>
-        <Button
-            android:layout_gravity="bottom|end"
-            android:id="@+id/btnWrite"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/solid_button"
-            android:layout_margin="10dp"
-            android:text="+" />
+
+                <Button
+                    android:id="@+id/btnWrite"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/solid_button"
+                    android:layout_marginBottom="60dp"
+                    android:layout_marginRight="15dp"
+                    android:text="+" />
+        </ScrollView>
 
         <LinearLayout
             android:background="#111111"
@@ -73,4 +76,4 @@
 
         </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
