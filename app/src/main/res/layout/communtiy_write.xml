@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:orientation="vertical">
-    <LinearLayout
+
+    <EditText
+        android:id="@+id/title_et"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="207dp"
+        android:layout_weight="1"
+        android:background="#eeeeee"
+        android:hint="제목을 입력하세요."
+        android:padding="16dp" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="46dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:scaleType="fitCenter"
+        android:translationX="-160dp"
         app:srcCompat="@drawable/ic_image" />
 
-        <EditText
-            android:id="@+id/content_et"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_weight="1"
-            android:background="#eeeeee"
-            android:hint="내용을 입력하세요."
-            android:padding="16dp" />
+    <EditText
+        android:id="@+id/content_et"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#eeeeee"
+        android:hint="내용을 입력하세요."
+        />
 
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="저장하기"
-        android:textColor="#FFFFFF"
-        android:background="#C62828"/>
-    </LinearLayout>
-</ScrollView>
+        android:background="#C62828"
+        android:text="글 작성하기"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
