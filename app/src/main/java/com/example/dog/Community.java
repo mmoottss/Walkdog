@@ -1,7 +1,9 @@
 package com.example.dog;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,8 +28,9 @@ public class Community extends AppCompatActivity {
         write_btn=findViewById(R.id.btnWrite);
         option_btn = findViewById(R.id.option);
 
-
         Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
 
         t.setText(userName);
@@ -35,9 +38,12 @@ public class Community extends AppCompatActivity {
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent intent = new Intent(Community.this, Maps.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -56,17 +62,37 @@ public class Community extends AppCompatActivity {
             public void onClick(View view) {
                 // 화면간 이동 데이터 전달
                 Intent intent = new Intent(getApplicationContext(), Writecommunity.class);
-                finishActivity(0);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
+                finish();
             }
         });
+
         }
 
-    //자동 로그아웃 방지. 뒤로가기 누를 시 Maps로 이동
+    //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, Maps.class);
-        startActivity(intent);
-    }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("안내");
+        builder.setMessage("로그아웃 하시겠습니까?");
 
+        builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+
+        });
+        builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Community.this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.create().show();
+    }
     }

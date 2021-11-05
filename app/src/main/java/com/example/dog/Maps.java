@@ -37,6 +37,9 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -81,6 +84,12 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
         mapFragment.getMapAsync(this);
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        String userPassword = intent.getStringExtra("userPassword");
+        String userName = intent.getStringExtra("userName");
+
 
         first_pos = new LatLng(37, 128);
         start_button = findViewById(R.id.start);
@@ -181,9 +190,12 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         community_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 Intent intent = new Intent(Maps.this, Community.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
+                finish();
             }
         });
         //하단바 설정창으로 이동
@@ -519,9 +531,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
                 Intent intent = new Intent(Maps.this, Login.class);
                 startActivity(intent);
+                finish();
             }
         });
         builder.create().show();

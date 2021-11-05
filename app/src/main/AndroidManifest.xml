@@ -25,6 +25,7 @@
         <activity android:name=".Maps"/>
         <activity android:name=".Register"/>
         <activity android:name=".Community"/>
+        <activity android:name=".option"/>
         <activity android:name=".Writecommunity"/>
 
         <activity

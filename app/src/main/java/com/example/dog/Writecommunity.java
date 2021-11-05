@@ -18,12 +18,10 @@ public class Writecommunity extends AppCompatActivity {
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
 
-
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
-
 
 
         imageview = (ImageView) findViewById(R.id.imageView);
@@ -47,11 +45,16 @@ public class Writecommunity extends AppCompatActivity {
             Uri selectedImageUri = data.getData();
             imageview.setImageURI(selectedImageUri);
         }
+
     }
 
     //뒤로가기 누를 시 글 작성을 취소하시겠습니까? 출력
     @Override
     public void onBackPressed() {
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        String userPassword = intent.getStringExtra("userPassword");
+        String userName = intent.getStringExtra("userName");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("안내");
         builder.setMessage("글 작성을 취소하시겠습니까?");
@@ -65,11 +68,15 @@ public class Writecommunity extends AppCompatActivity {
         builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                finish();
                 Intent intent = new Intent(Writecommunity.this, Community.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
+                finish();
             }
         });
         builder.create().show();
     }
+
 }

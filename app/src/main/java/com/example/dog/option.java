@@ -9,7 +9,6 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 public class option extends PreferenceFragmentCompat {
-
     SharedPreferences prefs;
 
     PreferenceScreen logscreen, alarmscreen;
