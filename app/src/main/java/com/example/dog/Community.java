@@ -13,6 +13,8 @@ public class Community extends AppCompatActivity {
     Button write_btn,map_btn,community_btn,option_btn;
     private TextView o;
 
+    String userName = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

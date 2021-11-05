@@ -5,64 +5,91 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.dog.Community">
+    tools:context="com.example.dog.Community"
+    android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/o"
+
+    <ScrollView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="287dp"
-            android:text="TextView"
-            android:textColor="#000000"
-            android:textSize="100sp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/o"
+                    android:layout_width="match_parent"
+                    android:layout_height="287dp"
+                    android:text="TextView"
+                    android:textColor="#000000"
+                    android:textSize="100sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/ao"
+                    android:layout_width="match_parent"
+                    android:layout_height="287dp"
+                    android:text="TextView"
+                    android:textColor="#000000"
+                    android:textSize="100sp" />
+            </LinearLayout>
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btnWrite"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"
             android:background="@drawable/solid_button"
+            android:layout_marginBottom="60dp"
+            android:layout_marginRight="15dp"
             android:text="+" />
+    </ScrollView>
 
-        <LinearLayout
-            android:id="@+id/lin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#111111">
+    <LinearLayout
+        android:background="#111111"
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
-                <Button
-                    android:id="@+id/mapmenu"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/maptext">
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/mapmenu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/maptext">
 
-                </Button>
+        </Button>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"
+            android:id="@+id/cummunity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/communitytext">
 
-                <Button
-                    android:id="@+id/cummunity"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/communitytext">
+        </Button>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"
+            android:id="@+id/option"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/optiontext">
 
-                </Button>
-
-                <Button
-                    android:id="@+id/option"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/optiontext">
-
-                </Button>
+        </Button>
 
 
-        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
