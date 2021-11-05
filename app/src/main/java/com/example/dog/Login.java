@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -79,11 +80,13 @@ public class Login extends AppCompatActivity {
                             if(success) {
                                 String userID = jsonObject.getString("userID");
                                 String userPassword = jsonObject.getString("userPassword");
+                                String userName = jsonObject.getString("userName");
 
-                                Toast.makeText(getApplicationContext(), "로그인 성공.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent( Login.this, Maps.class);
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
+                                intent.putExtra("userName", userName);
+                                Toast.makeText(getApplicationContext(),userName + "님 어서오세요!", Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                             } else{
                                 Toast.makeText(getApplicationContext(),"로그인 실패.", Toast.LENGTH_SHORT).show();

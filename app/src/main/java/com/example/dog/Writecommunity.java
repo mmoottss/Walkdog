@@ -1,6 +1,7 @@
 package com.example.dog;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,12 +21,15 @@ public class Writecommunity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
 
+
+
         imageview = (ImageView) findViewById(R.id.imageView);
         imageview.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent, GET_GALLERY_IMAGE);
+
                 // 사진을 글쓰는 창에 올리기까지 가능. 글자취소선 이유 모르겠음...
             }
         });

@@ -6,20 +6,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.widget.TextView;
 
 public class Community extends AppCompatActivity {
 
     Button write_btn,map_btn,community_btn,option_btn;
-
+    private TextView o;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
 
+        o = findViewById(R.id.o);
         map_btn=findViewById(R.id.mapmenu);
+        write_btn=findViewById(R.id.btnWrite);
+        option_btn = findViewById(R.id.option);
+
+
+
+        Intent intent = getIntent();
+        intent.putExtra("userName", userName);
+        String userName = intent.getStringExtra("userName");
+
+        o.setText(userName);
+
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,7 +39,7 @@ public class Community extends AppCompatActivity {
             }
         });
 
-        option_btn = findViewById(R.id.option);
+
         option_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +48,7 @@ public class Community extends AppCompatActivity {
         });
 
 
-        write_btn=findViewById(R.id.btnWrite);
+
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
