@@ -6,23 +6,12 @@
     android:layout_height="match_parent"
     android:backgroundTint="#6DF870">
 
-    <Button
-        android:id="@+id/reg_back"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_weight="0"
-        android:backgroundTint="#6DF870"
-        android:text="←"
-        android:textColor="#000000"
-        android:translationX="-0dp"
-        android:translationY="-15dp" />
-
     <FrameLayout
         android:layout_width="170dp"
         android:layout_height="50dp"
         android:layout_weight="0"
-        android:background="#6DF870"
-        android:translationX="70dp">
+        android:background="@color/theme_color"
+        android:translationX="110dp">
 
         <TextView
             android:id="@+id/textView"
@@ -44,15 +33,15 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-170dp"
+        android:translationX="-130dp"
         android:translationY="230dp" />
 
     <FrameLayout
         android:layout_width="180dp"
         android:layout_height="70dp"
         android:animateLayoutChanges="false"
-        android:background="#6DF870"
-        android:translationX="-160dp"
+        android:background="@color/theme_color"
+        android:translationX="-120dp"
         android:translationY="220dp">
 
         <FrameLayout
@@ -89,7 +78,7 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-420dp"
+        android:translationX="-380dp"
         android:translationY="310dp" />
 
     <FrameLayout
@@ -97,8 +86,8 @@
         android:layout_height="70dp"
         android:layout_weight="0"
         android:animateLayoutChanges="false"
-        android:background="#6DF870"
-        android:translationX="-427dp"
+        android:background="@color/theme_color"
+        android:translationX="-387dp"
         android:translationY="305dp">
 
         <FrameLayout
@@ -128,14 +117,14 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="73dp"
+        android:layout_width="63dp"
         android:layout_height="45dp"
         android:layout_weight="0"
         android:text="닉네임"
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-670dp"
+        android:translationX="-630dp"
         android:translationY="400dp" />
 
     <FrameLayout
@@ -143,8 +132,8 @@
         android:layout_height="70dp"
         android:layout_weight="0"
         android:animateLayoutChanges="false"
-        android:background="#6DF870"
-        android:translationX="-680dp"
+        android:background="@color/theme_color"
+        android:translationX="-630dp"
         android:translationY="395dp">
 
         <FrameLayout
@@ -177,12 +166,12 @@
         android:layout_width="200dp"
         android:layout_height="70dp"
         android:layout_weight="0"
-        android:backgroundTint="#6DF870"
+        android:backgroundTint="@color/theme_color"
         android:text="회원가입 하기"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
-        android:translationX="-870dp"
+        android:translationX="-820dp"
         android:translationY="500dp" />
 
 </LinearLayout>

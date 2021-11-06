@@ -5,35 +5,43 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Community extends AppCompatActivity {
 
-    Button write_btn,map_btn,community_btn,option_btn;
+    Button write_btn, map_btn, community_btn, option_btn;
     private TextView t;
+    private String TAG = getClass().getSimpleName();
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
 
-        t = findViewById(R.id.o);
-        map_btn=findViewById(R.id.mapmenu);
-        write_btn=findViewById(R.id.btnWrite);
+
+        map_btn = findViewById(R.id.mapmenu);
+        write_btn = findViewById(R.id.btnWrite);
         option_btn = findViewById(R.id.option);
 
         Intent intent = getIntent();
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
-
-        t.setText(userName);
 
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +64,6 @@ public class Community extends AppCompatActivity {
         });
 
 
-
         write_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,8 +76,9 @@ public class Community extends AppCompatActivity {
                 finish();
             }
         });
+        //글
 
-        }
+    }
 
     //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
     @Override
@@ -95,4 +103,4 @@ public class Community extends AppCompatActivity {
         });
         builder.create().show();
     }
-    }
+}

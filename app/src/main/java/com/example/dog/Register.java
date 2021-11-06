@@ -28,7 +28,7 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
 
     private EditText reg_id, reg_pass, reg_nickname;
-    private Button register_confirm, btn_back;
+    private Button register_confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +102,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
+    //뒤로가기 누를 시 회원가입을 하시겠습니까? 출력
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
