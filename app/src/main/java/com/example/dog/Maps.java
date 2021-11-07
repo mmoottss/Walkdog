@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -64,8 +65,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     int start_flag = 0, load_flag = 0;
     double longitude, latitude;
     LatLng user_pos;
-    Button start_button, community_button, option_button;
-    ImageButton location_button, load_button;
+    Button start_button, community_button, option_button,location_button, load_button;
     LocationManager lm;
 
     List<List<Polyline>> ary = new ArrayList<>();
@@ -97,7 +97,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         option_button = findViewById(R.id.option);
 
         // 산책시작버튼
-        start_button.setOnClickListener(new Button.OnClickListener() {
+        start_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 //산책시작
                 if (start_flag == 0) {
@@ -150,7 +150,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 //산책종료
                 else if (start_flag == 1) {
                     start_flag = 2;
-                    start_button.setText("산책 경로 제거");
+                    start_button.setText("경로 제거");
                     lm.removeUpdates(gpsLocationListener);
                     lm.removeUpdates(netLocationListener);
                 }
@@ -233,6 +233,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
             }
         });
+    }
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     //단일 리스너
