@@ -65,7 +65,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
     List<List<Polyline>> ary= new ArrayList<>();
     List<List<Long>> timeline= new ArrayList<>();
-
     List<Polyline> cur_ary = new ArrayList<>();
 
     protected void onDestroy() {
@@ -247,7 +246,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);
@@ -274,7 +272,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     }
     // 경로 저장
     void FileWrite(LatLng tmp_location,LatLng location,Long time) {
-
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT >= 23 &&
                 checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -416,7 +413,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
 
                         if(timeary[1]!=null)
                             timeline.get(i).add(Long.parseLong(timeary[1]));//폴리라인 시간 생성
-
                     }
                     buf.close();
                 } catch (FileNotFoundException e) {
