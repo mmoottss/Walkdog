@@ -26,6 +26,7 @@
         <activity android:name=".Register"/>
         <activity android:name=".Community"/>
         <activity android:name=".Writecommunity"/>
+        <activity android:name=".option_act"/>
 
         <activity
             android:name=".Login"

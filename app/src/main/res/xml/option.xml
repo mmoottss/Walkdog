@@ -79,4 +79,5 @@
                 android:data="mailto:ck1808@naver.com"/>
         </Preference>
     </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

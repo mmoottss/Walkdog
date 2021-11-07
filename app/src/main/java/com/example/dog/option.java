@@ -3,6 +3,8 @@ package com.example.dog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
@@ -24,11 +26,10 @@ import androidx.preference.PreferenceScreen;
 //https://developer.android.com/training/basics/fragments/creating?hl=ko
 // ㄴ>프래그먼트 만드는 법
 //https://devatom.tistory.com/4
-// ㄴ>중첩 프래그먼트 만드는 법...
+// ㄴ>중첩 프래그먼트...
 
 public class option extends PreferenceFragmentCompat {
     SharedPreferences prefs;
-
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.option, rootKey);
@@ -58,7 +59,7 @@ public class option extends PreferenceFragmentCompat {
     SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            //버튼 클릭 시 설정변화 추가(ex.야간모드 클릭 시 theme 변경 등…)
+            //버튼 클릭 시 설정변화 추가
             if(key.equals("log")){
                 getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
             }
