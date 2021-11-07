@@ -31,8 +31,6 @@ public class Community extends AppCompatActivity {
     private ListView listView;
     private TextView nickname;
 
-    String userName = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

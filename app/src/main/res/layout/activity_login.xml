@@ -54,7 +54,8 @@
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:maxLength="20"/>
 
         </FrameLayout>
     </FrameLayout>
@@ -86,7 +87,8 @@
                 android:padding="5dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:maxLength="20"/>
 
         </FrameLayout>
     </FrameLayout>

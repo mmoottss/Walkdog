@@ -56,14 +56,23 @@ public class Register extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
-                            if (success) {
-                                Toast.makeText(getApplicationContext(),"회원가입 성공.",Toast.LENGTH_SHORT).show();
+                             if(reg_id.length() == 0) {
+                                Toast.makeText(getApplicationContext(), "사용할 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                return;
+                            } if(reg_pass.length() == 0) {
+                                Toast.makeText(getApplicationContext(),"사용할 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }  if (reg_nickname.length() == 0){
+                                Toast.makeText(getApplicationContext(),"사용할 닉네임을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                return;
+                            } if(!success) {
+                                Toast.makeText(getApplicationContext(),"회원가입에 실패했습니다.",Toast.LENGTH_SHORT).show();
+                                return;
+                            }  if (success) {
+                                Toast.makeText(getApplicationContext(), "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(Register.this, Login.class);
                                 startActivity(intent);
                                 finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(),"회원가입에 실패.",Toast.LENGTH_SHORT).show();
-                                return;
                             }
 
                         } catch (JSONException e) {
