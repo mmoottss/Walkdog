@@ -30,6 +30,7 @@
         <activity android:name=".Community"
             android:launchMode="singleTask"/>
         <activity android:name=".Writecommunity" />
+        <activity android:name=".option_act"/>
         <activity android:name=".Login" />
         <activity
             android:name=".Intro"

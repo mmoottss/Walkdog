@@ -1,57 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <PreferenceCategory android:title="마이페이지">
-        <PreferenceScreen
+        <Preference
             android:key="Log"
             android:title="계정 관리">
-            <Preference
-                android:key="profile"
-                android:title="프로필 관리"/>
-        <!--프로필 관리 버튼 클릭 시 activity_profile로 이동-->
-        <!--프로필 -> 프로필 사진, 닉네임(아이디), 반려견 프로필-->
-            <Preference
-                android:key="change_pw"
-                android:title="비밀번호 변경"/>
-            <Preference
-                android:key="LogOut"
-                android:title="로그아웃"/>
-            <Preference
-                android:key="Leave"
-                android:title="탈퇴하기"/>
-        </PreferenceScreen>
+            <intent android:targetPackage="com.example.dog.option"/>
+<!--            <Preference-->
+<!--                app:fragment="com."-->
+<!--                android:key="profile"-->
+<!--                android:title="프로필 관리"/>-->
+<!--&lt;!&ndash;        프로필 관리 버튼 클릭 시 activity_profile로 이동&ndash;&gt;-->
+<!--&lt;!&ndash;        프로필 -> 프로필 사진, 닉네임(아이디), 반려견 프로필&ndash;&gt;-->
+<!--            <Preference-->
+<!--                android:key="change_pw"-->
+<!--                android:title="비밀번호 변경"/>-->
+<!--            <Preference-->
+<!--                android:key="LogOut"-->
+<!--                android:title="로그아웃"/>-->
+<!--            <Preference-->
+<!--                android:key="Leave"-->
+<!--                android:title="탈퇴하기"/>-->
+        </Preference>
         <!--계정 -> 프로필(견주, 반려동물)변경, 로그아웃, 탈퇴-->
-        <PreferenceScreen
+        <Preference
             android:key="Route"
             android:title="경로 관리">
-            <Preference
-                android:key="route_accu"
-                android:title="경로 누적일 변경"/>
-            <Preference
-                android:key="route_reset"
-                android:title="현재 경로 초기화"/>
-            <Preference
-                android:key="route_delete"
-                android:title="누적 경로 삭제"/>
-        </PreferenceScreen>
+<!--            <Preference-->
+<!--                android:key="route_accu"-->
+<!--                android:title="경로 누적일 변경"/>-->
+<!--            <Preference-->
+<!--                android:key="route_reset"-->
+<!--                android:title="현재 경로 초기화"/>-->
+<!--            <Preference-->
+<!--                android:key="route_delete"-->
+<!--                android:title="누적 경로 삭제"/>-->
+        </Preference>
         <!--경로 초기화, 데이터 삭제, (+)견종 필터링 등등...-->
-        <PreferenceScreen
+        <Preference
             android:key="Alarm"
             android:title="알림 설정" >
-            <SwitchPreference
-                android:title="알림 받기"
-                android:defaultValue="true"
-                android:key="Ringing"/>
-            <!--알림 받기 true 시 하단 표시-->
-            <SwitchPreference
-                android:key="sound"
-                android:title="소리"
-                android:dependency="Ringing"/>
-            <SwitchPreference
-                android:key="message"
-                android:title="진동"
-                android:dependency="Ringing"/>
-        </PreferenceScreen>
+<!--            <SwitchPreference-->
+<!--                android:title="알림 받기"-->
+<!--                android:defaultValue="true"-->
+<!--                android:key="Ringing"/>-->
+<!--            &lt;!&ndash;알림 받기 true 시 하단 표시&ndash;&gt;-->
+<!--            <SwitchPreference-->
+<!--                android:key="sound"-->
+<!--                android:title="소리"-->
+<!--                android:dependency="Ringing"/>-->
+<!--            <SwitchPreference-->
+<!--                android:key="message"-->
+<!--                android:title="진동"-->
+<!--                android:dependency="Ringing"/>-->
+        </Preference>
         <!--알림 -> 알림on/off, 알림 on 시 소리, 진동설정,
                     각종 알림on/off(ex/커뮤니티글 관련 등)-->
         <SwitchPreference
@@ -61,10 +64,13 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="고객지원">
         <Preference
+            app:fragment="com.example.dog.option"
             android:key="developers"
             android:title="개발자 정보">
-            <intent android:data=""/>
+            <intent
+                />
         </Preference>
+        <!--문의하기 클릭시 메일 보내는 창으로 넘어감-->
         <Preference
             android:key="contect"
             android:title="문의하기">
@@ -72,6 +78,6 @@
                 android:action="android.intent.action.SENDTO"
                 android:data="mailto:ck1808@naver.com"/>
         </Preference>
-<!--        app:fragment="com.example.StncFragment" => 듣기로는 Preference에 꼭 적어야한다던데 지켜보기-->
     </PreferenceCategory>
+
 </androidx.preference.PreferenceScreen>

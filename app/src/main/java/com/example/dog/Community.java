@@ -65,8 +65,8 @@ public class Community extends AppCompatActivity {
         option_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_option);
-                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
+                Intent intent = new Intent(Community.this, option_act.class);
+                startActivity(intent);
             }
         });
 
