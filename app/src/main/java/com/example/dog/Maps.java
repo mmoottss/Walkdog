@@ -554,7 +554,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("안내");
-        builder.setMessage("로그아웃 하시겠습니까?");
+        builder.setMessage("앱을 종료 하시겠습니까?");
 
         builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
             @Override
@@ -565,9 +565,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Maps.this, Login.class);
-                startActivity(intent);
-                finish();
+                ActivityCompat.finishAffinity(Maps.this);
+                System.exit(0);
             }
         });
         builder.create().show();

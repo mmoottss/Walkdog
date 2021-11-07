@@ -43,7 +43,7 @@
 
         <Button
             style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/mapmenu"
+            android:id="@+id/map_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"

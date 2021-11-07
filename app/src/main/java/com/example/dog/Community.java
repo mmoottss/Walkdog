@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +37,7 @@ public class Community extends AppCompatActivity {
         setContentView(R.layout.activity_community);
 
 
-        map_btn = findViewById(R.id.mapmenu);
+        map_btn = findViewById(R.id.map_btn);
         write_btn = findViewById(R.id.btnWrite);
         option_btn = findViewById(R.id.option);
 
@@ -56,7 +55,6 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
-                startActivity(intent);
                 finish();
             }
         });
@@ -99,7 +97,7 @@ public class Community extends AppCompatActivity {
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("안내");
-        builder.setMessage("로그아웃 하시겠습니까?");
+        builder.setMessage("앱을 종료 하시겠습니까?");
 
         builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
             @Override
@@ -110,9 +108,8 @@ public class Community extends AppCompatActivity {
         builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Community.this, Login.class);
-                startActivity(intent);
-                finish();
+                ActivityCompat.finishAffinity(Community.this);
+                System.exit(0);
             }
         });
         builder.create().show();
