@@ -1,11 +1,13 @@
 package com.example.dog;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -28,12 +30,16 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.RoundCap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -49,22 +55,21 @@ import java.util.List;
 
 public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "Maps";
-    private static final int TIME =1000;
-    private static final int DISTANCE = 2;
-    private static final double CHECK_POINT = 0.000025;
+    private static final int TIME = 2000;
+    private static final int DISTANCE = 4;
+    private static int search_day = 1;
+    private static final double CHECK_POINT = 0.00002;
     private static final int CHECK_TIME = 60000;// 1000당 1초
     private GoogleMap mMap;
-
-    int start_flag = 0, load_flag = 0, search_day = 1;
+    int start_flag = 0, load_flag = 0;
     double longitude, latitude;
-    LatLng user_pos, first_pos;
-    Cap cap= new RoundCap();
-    Button start_button, community_button, location_button, load_button, option_button;
-    TextView txv;
+    LatLng user_pos;
+    Button start_button, community_button, option_button;
+    ImageButton location_button, load_button;
+    LocationManager lm;
 
-    List<List<Polyline>> ary= new ArrayList<>();
-    List<List<Long>> timeline= new ArrayList<>();
-
+    List<List<Polyline>> ary = new ArrayList<>();
+    List<List<Long>> timeline = new ArrayList<>();
     List<Polyline> cur_ary = new ArrayList<>();
 
     protected void onDestroy() {
@@ -74,46 +79,71 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        first_pos = new LatLng(37, 128);
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        String userPassword = intent.getStringExtra("userPassword");
+        String userName = intent.getStringExtra("userName");
+
         start_button = findViewById(R.id.start);
         location_button = findViewById(R.id.location);
         load_button = findViewById(R.id.load);
         community_button = findViewById(R.id.cummunity);
         option_button = findViewById(R.id.option);
+
         // 산책시작버튼
         start_button.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View view) {
                 //산책시작
                 if (start_flag == 0) {
-                    start_flag = 1;
-                    if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
-                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(Maps.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-                    }
-                    //권한획득시
-                    else {
-                        start_button.setText("산책종료");
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, gpsLocationListener);
-                        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                        if(location==null){
-                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, gpsLocationListener);
-                            location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            if(location == null){
-                                Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
-                                Log.v(TAG,"프로바이더 오류");
-                                return ;
+                    if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            != PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT >= 23 &&
+                            checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                             }
                         }
-                        else{
-                            longitude = location.getLongitude();
-                            latitude =location.getLatitude();
-                            user_pos = new LatLng(latitude, longitude);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                        }
+                    } else {
+
+                        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(Maps.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                        }
+                        //권한획득시
+                        else {
+                            mMap.setMyLocationEnabled(true);
+                            start_flag = 1;
+                            start_button.setText("산책종료");
+                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, gpsLocationListener);
+                            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            if (location == null) {
+                                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, gpsLocationListener);
+                                location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                                if (location == null) {
+                                    Toast.makeText(getApplicationContext(), "프로바이더 오류", Toast.LENGTH_SHORT).show();
+                                    Log.v(TAG, "프로바이더 오류");
+                                    return;
+                                }
+                                else{
+                                    longitude = location.getLongitude();
+                                    latitude = location.getLatitude();
+                                    user_pos = new LatLng(latitude, longitude);
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
+                                }
+                            } else {
+                                longitude = location.getLongitude();
+                                latitude = location.getLatitude();
+                                user_pos = new LatLng(latitude, longitude);
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
+                            }
                         }
                     }
                 }
@@ -128,13 +158,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 else if (start_flag == 2) {
                     start_flag = 0;
                     start_button.setText("산책 시작");
-                    for(int i =cur_ary.size()-1;i>-1;i--) {
+                    for (int i = cur_ary.size() - 1; i > -1; i--) {
                         cur_ary.get(i).remove();
                         cur_ary.remove(i);
                     }
                 }
             }
         });
+
         // 유저좌표이동버튼
         location_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,26 +177,34 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 }
                 //권한획득시
                 else {
+                    mMap.setMyLocationEnabled(true);
                     Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
+                    lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);
+                    lm.removeUpdates(SingleListener);
 
-                    if(location==null) {
+                    if (location == null) {
                         location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
+                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, SingleListener);
+                        lm.removeUpdates(SingleListener);
 
-                        if(location == null){
-                            Toast.makeText(getApplicationContext(),"프로바이더 오류", Toast.LENGTH_SHORT).show();
-                            Log.v(TAG,"프로바이더 오류");
-                            return ;
+                        if (location == null) {
+                            Toast.makeText(getApplicationContext(), "프로바이더 오류", Toast.LENGTH_SHORT).show();
+                            Log.v(TAG, "프로바이더 오류");
+                            return;
+                        } else {
+                            longitude = location.getLongitude();
+                            latitude = location.getLatitude();
+                            user_pos = new LatLng(latitude, longitude);
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
                         }
+                    } else {
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
+                        user_pos = new LatLng(latitude, longitude);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
                     }
-                    longitude = location.getLongitude();
-                    latitude =location.getLatitude();
-                    user_pos = new LatLng(latitude, longitude);
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
                 }
             }
-
         });
         //이전산책경로가져오기
         load_button.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +218,9 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Maps.this, Community.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
@@ -186,16 +228,17 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         option_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_option);
-                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
+                Intent intent = new Intent(Maps.this, option_act.class);
+                startActivity(intent);
             }
         });
     }
+
     //단일 리스너
     final LocationListener SingleListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             longitude = location.getLongitude();
-            latitude =location.getLatitude();
+            latitude = location.getLatitude();
             user_pos = new LatLng(latitude, longitude);
         }
     };
@@ -210,12 +253,13 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
             Polyline polyline = mMap.addPolyline(polylineOptions);
             polyline.setWidth(20f);
-            polyline.setEndCap(cap);
-            polyline.setStartCap(cap);
+            polyline.setEndCap(new RoundCap());
+            polyline.setStartCap(new RoundCap());
             cur_ary.add(polyline);
             FileWrite(tmp_user_pos, user_pos, location.getTime());
             mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
         }
+
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     };
@@ -229,51 +273,54 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             PolylineOptions polylineOptions = new PolylineOptions().add(tmp_user_pos).add(user_pos);
             Polyline polyline = mMap.addPolyline(polylineOptions);
             polyline.setWidth(20f);
-            polyline.setEndCap(cap);
-            polyline.setStartCap(cap);
+            polyline.setEndCap(new RoundCap());
+            polyline.setStartCap(new RoundCap());
             cur_ary.add(polyline);
             FileWrite(tmp_user_pos, user_pos, location.getTime());
             mMap.moveCamera(CameraUpdateFactory.newLatLng(user_pos));
         }
+
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
     };
+
     //지도시작
     public void onMapReady(@NonNull final GoogleMap googleMap) {
         mMap = googleMap;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;}
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        mMap.setMyLocationEnabled(true);
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);
-        if(location==null){
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, SingleListener);lm.removeUpdates(SingleListener);
-            location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-            if(location!=null) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37, 128), 18));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Maps.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
+        else {
+            mMap.setMyLocationEnabled(true);
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, TIME, DISTANCE, SingleListener);
+            lm.removeUpdates(SingleListener);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location == null) {
+                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TIME, DISTANCE, SingleListener);
+                lm.removeUpdates(SingleListener);
+                location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                if (location != null) {
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    user_pos = new LatLng(latitude, longitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
+                } else {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37, 128), 18));
+                }
+            } else {
                 longitude = location.getLongitude();
-                latitude =location.getLatitude();
+                latitude = location.getLatitude();
                 user_pos = new LatLng(latitude, longitude);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos, 18));
             }
-            else {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(first_pos, 18));
-            }
-        }
-        else {
-            longitude = location.getLongitude();
-            latitude =location.getLatitude();
-            user_pos = new LatLng(latitude, longitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(user_pos,18));
         }
     }
     // 경로 저장
     void FileWrite(LatLng tmp_location,LatLng location,Long time) {
-
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT >= 23 &&
                 checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -410,12 +457,11 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                         polyline.setWidth(20f);
 
                         polyline.setColor(polyColor(polyCompare(polyline,Long.parseLong(timeary[1]))));
-                        polyline.setStartCap(cap);polyline.setEndCap(cap);
+                        polyline.setStartCap(new RoundCap());polyline.setEndCap(new RoundCap());
                         ary.get(i).add(polyline);//ary.array.add(polyline); 2중 동적생성
 
                         if(timeary[1]!=null)
                             timeline.get(i).add(Long.parseLong(timeary[1]));//폴리라인 시간 생성
-
                     }
                     buf.close();
                 } catch (FileNotFoundException e) {
@@ -490,6 +536,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         }
         return count;
     }
+    //location 정보 같은지 확인
     boolean location_equal(LatLng point1,LatLng point2){
         if(point1.longitude > point2.longitude- CHECK_POINT && point1.longitude < point2.longitude+ CHECK_POINT){
             if(point1.latitude > point2.latitude- CHECK_POINT && point1.latitude < point2.latitude+ CHECK_POINT){
@@ -497,5 +544,28 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         }
         return false;
+    }
+
+    //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("안내");
+        builder.setMessage("앱을 종료 하시겠습니까?");
+
+        builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+
+        });
+        builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityCompat.finishAffinity(Maps.this);
+                System.exit(0);
+            }
+        });
+        builder.create().show();
     }
 }

@@ -1,68 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.dog.Community">
+    tools:context="com.example.dog.Community"
+    android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/o"
-            android:layout_width="match_parent"
-            android:layout_height="287dp"
-            android:text="TextView"
-            android:textColor="#000000"
-            android:textSize="100sp" />
-
-        <Button
-            android:id="@+id/btnWrite"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"
-            android:background="@drawable/solid_button"
-            android:text="+" />
-
+    <ScrollView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
         <LinearLayout
-            android:id="@+id/lin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#111111">
-
-                <Button
-                    android:id="@+id/mapmenu"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/maptext">
-
-                </Button>
-
-                <Button
-                    android:id="@+id/cummunity"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/communitytext">
-
-                </Button>
-
-                <Button
-                    android:id="@+id/option"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/optiontext">
-
-                </Button>
+            android:orientation="vertical"
+            android:id="@+id/LinLayout">
 
 
         </LinearLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/btnWrite"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:background="@drawable/solid_button"
+        android:layout_marginBottom="60dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="+" />
 
-</LinearLayout>
+    <LinearLayout
+        android:background="@color/theme_color"
+        android:id="@+id/lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/map_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/maptext"
+            android:textColor="#000000">
+
+        </Button>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"
+            android:id="@+id/cummunity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/communitytext"
+            android:textColor="#000000">
+
+        </Button>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_weight="1"
+            android:id="@+id/option"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/optiontext"
+            android:textColor="#000000">
+
+        </Button>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
