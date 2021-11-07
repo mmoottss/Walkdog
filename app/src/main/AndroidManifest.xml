@@ -23,10 +23,12 @@
             android:value="AIzaSyCE5n7MIhCmwu6B5v1NMY1CjW6ky4FixkQ" />
 
         <activity android:name=".Maps"
+            android:launchMode="singleTask"
             android:configChanges="screenSize|orientation"/>
 
         <activity android:name=".Register"/>
-        <activity android:name=".Community"/>
+        <activity android:name=".Community"
+            android:launchMode="singleTask"/>
         <activity android:name=".Writecommunity" />
         <activity android:name=".Login" />
         <activity

@@ -57,7 +57,6 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -81,7 +80,6 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
                 startActivity(intent);
-                finish();
 
                 // 동적생성
                 // 방법을 찾는다면 글쓰기창의 저장버튼을 눌렀을 때 생성되도록 수정하기
