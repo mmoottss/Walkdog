@@ -9,8 +9,10 @@
     <string name="communitytext">커뮤니티</string>
     <string name="optiontext">환경설정</string>
     <string name="starttext">시작</string>
-    <string name="walkStart">산책출발</string>
+    <string name="walkStart">산책 출발</string>
     <string name="title_et">제목을 입력하세요.</string>
     <string name="qwer">워크독 게시판</string>
     <string name="cummunity">커뮤니티</string>
+    <string name="mylocation">내위치</string>
+    <string name="callloc">경로가져오기</string>
 </resources>
