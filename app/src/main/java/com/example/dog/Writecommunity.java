@@ -92,7 +92,7 @@ public class Writecommunity extends AppCompatActivity {
                             if (success) {
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
-                                Intent intent = new Intent(Writecommunity.this, Community.class);
+                                Intent intent = new Intent(Writecommunity.this, subcommunity.class);
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
                                 String userName = intent.getStringExtra("userName");
