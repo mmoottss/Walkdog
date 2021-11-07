@@ -30,6 +30,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,13 +58,14 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final int TIME = 2000;
     private static final int DISTANCE = 4;
     private static int search_day = 1;
-    private static final double CHECK_POINT = 0.000025;
+    private static final double CHECK_POINT = 0.00002;
     private static final int CHECK_TIME = 60000;// 1000당 1초
     private GoogleMap mMap;
     int start_flag = 0, load_flag = 0;
     double longitude, latitude;
     LatLng user_pos;
-    Button start_button, community_button, location_button, load_button, option_button;
+    Button start_button, community_button, option_button;
+    ImageButton location_button, load_button;
     LocationManager lm;
 
     List<List<Polyline>> ary = new ArrayList<>();
