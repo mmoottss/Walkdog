@@ -22,14 +22,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCE5n7MIhCmwu6B5v1NMY1CjW6ky4FixkQ" />
 
-        <activity android:name=".Maps"/>
+        <activity android:name=".Maps"
+            android:configChanges="screenSize|orientation"/>
+
         <activity android:name=".Register"/>
         <activity android:name=".Community"/>
         <activity android:name=".Writecommunity"/>
         <activity android:name=".option_act"/>
-
+        <activity android:name=".Login" />
         <activity
-            android:name=".Login"
+            android:name=".Intro"
             android:exported="true"
             android:label="워킹독">
             <intent-filter>
