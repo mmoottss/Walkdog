@@ -61,7 +61,16 @@ public class Login extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
-                            if(success) {
+                                if(et_id.length() == 0) {
+                                    Toast.makeText(getApplicationContext(), "아이디를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } if(et_pass.length() == 0) {
+                                    Toast.makeText(getApplicationContext(),"비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }  if (!success){
+                                    Toast.makeText(getApplicationContext(),"아이디와 비밀번호가 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }  if(success) {
                                 String userID = jsonObject.getString("userID");
                                 String userPassword = jsonObject.getString("userPassword");
                                 String userName = jsonObject.getString("userName");
@@ -69,14 +78,9 @@ public class Login extends AppCompatActivity {
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
                                 intent.putExtra("userName", userName);
-                                Toast.makeText(getApplicationContext(),userName + "님 어서오세요!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), userName + "님 어서오세요!", Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                                 finish();
-
-
-                            } else{
-                                Toast.makeText(getApplicationContext(),"로그인 실패.", Toast.LENGTH_SHORT).show();
-                                return;
                             }
 
                         } catch (JSONException e) {
