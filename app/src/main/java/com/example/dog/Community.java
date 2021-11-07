@@ -2,7 +2,6 @@ package com.example.dog;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +24,12 @@ import java.util.ArrayList;
 public class Community extends AppCompatActivity {
 
     Button write_btn, map_btn, community_btn, option_btn;
+    private TextView t;
+    private String TAG = getClass().getSimpleName();
+    private ListView listView;
+    private TextView nickname;
+
+    String userName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,8 @@ public class Community extends AppCompatActivity {
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
 
+       /* nickname.setText(userName);*/
+
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +63,8 @@ public class Community extends AppCompatActivity {
         option_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setContentView(R.layout.activity_option);
+                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
             }
         });
 
@@ -70,6 +78,14 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
                 startActivity(intent);
+                finish();
+
+                // 동적생성
+                // 방법을 찾는다면 글쓰기창의 저장버튼을 눌렀을 때 생성되도록 수정하기
+                // 생성된 레이아웃에 데이터 적용법도 찾기!
+                subcommunity n_layout = new subcommunity(getApplicationContext());
+                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
+                con.addView(n_layout);
             }
         });
         //글

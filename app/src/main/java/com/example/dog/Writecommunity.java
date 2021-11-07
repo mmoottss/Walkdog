@@ -2,6 +2,8 @@ package com.example.dog;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,9 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.ByteArrayOutputStream;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
@@ -33,17 +39,30 @@ public class Writecommunity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
-    private EditText title_et, content_et;
+    private EditText title_et,content_et;
+    private TextView nickname;
     private Button btnSave;
+    Bundle bundle;
+    Bitmap sendbitmap;
+    byte[] image = new byte[100];
+
+    String userName = "";
+    String title, content, name;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
 
-        title_et = findViewById(R.id.title_et);
-        content_et = findViewById(R.id.content_et);
-        btnSave = findViewById(R.id.btnSave);
+        title_et = (EditText) findViewById(R.id.title_et);
+        content_et = (EditText) findViewById(R.id.content_et);
+        //textview 내용을 string으로 저장
+        title_et.getText().toString();
+        content_et.getText().toString();
+        title = new String(title_et.getText().toString());
+        content = new String(content_et.getText().toString());
+//        name = new String(nickname.getText().toString());
+
 
         imageview = (ImageView) findViewById(R.id.imageView);
         imageview.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +75,7 @@ public class Writecommunity extends AppCompatActivity {
             }
         });
         //글 작성하기 누를 시
+        btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
 
             @Override

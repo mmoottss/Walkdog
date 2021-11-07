@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button">
+        <item name="android:fontFamily">@font/sangsang</item>
+    </style>
+</resources>
