@@ -30,22 +30,6 @@ public class Login extends AppCompatActivity {
     private long backKeyPressedTime = 0;
 
     @Override
-    public void onBackPressed() {
-        // 뒤로가기 버튼 2번 누를 시 종료
-        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-            backKeyPressedTime = System.currentTimeMillis();
-            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다. ", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-            // 앱 완전 종료 코드
-            ActivityCompat.finishAffinity(this);
-            System.exit(0);
-        }
-    }
-
-    @Override
     protected  void onCreate(Bundle savedInstanceState) {
         ActionBar actionBar = getSupportActionBar();
         super.onCreate(savedInstanceState);
@@ -81,20 +65,24 @@ public class Login extends AppCompatActivity {
                                 String userID = jsonObject.getString("userID");
                                 String userPassword = jsonObject.getString("userPassword");
                                 String userName = jsonObject.getString("userName");
-
-                                Intent intent = new Intent( Login.this, Maps.class);
+                                Intent intent = new Intent(Login.this, Maps.class);
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
                                 intent.putExtra("userName", userName);
                                 Toast.makeText(getApplicationContext(),userName + "님 어서오세요!", Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
+                                finish();
+
+
                             } else{
                                 Toast.makeText(getApplicationContext(),"로그인 실패.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
                 };
                 LoginRequest loginRequest = new LoginRequest(userID, userPassword, responseListener);
@@ -123,5 +111,19 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        // 뒤로가기 버튼 2번 누를 시 종료
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다. ", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            // 앱 완전 종료 코드
+            ActivityCompat.finishAffinity(this);
+            System.exit(0);
+        }
+    }
 }
