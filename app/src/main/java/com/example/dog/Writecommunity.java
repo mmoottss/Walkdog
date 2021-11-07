@@ -39,9 +39,9 @@ public class Writecommunity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
     private ImageView imageview;
-    EditText title_et,content_et;
+    private EditText title_et,content_et;
     private TextView nickname;
-    Button btnSave;
+    private Button btnSave;
     Bundle bundle;
     Bitmap sendbitmap;
     byte[] image = new byte[100];
@@ -54,12 +54,6 @@ public class Writecommunity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.communtiy_write);
 
-        /*Intent intent = getIntent();
-        intent.putExtra("userName", userName);
-        String userName = intent.getStringExtra("userName");
-
-        nickname.setText(userName);*/
-
         title_et = (EditText) findViewById(R.id.title_et);
         content_et = (EditText) findViewById(R.id.content_et);
         //textview 내용을 string으로 저장
@@ -68,29 +62,6 @@ public class Writecommunity extends AppCompatActivity {
         title = new String(title_et.getText().toString());
         content = new String(content_et.getText().toString());
 //        name = new String(nickname.getText().toString());
-
-
-        btnSave = (Button) findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                // 동적생성 되는건 모르겠지만 켜진다
-                //보내줄 데이터 bundle에 저장
-                //이미지는 비트맵으로 변환 후 저장
-//                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                sendbitmap = BitmapFactory.decodeResource(getResources(), GET_GALLERY_IMAGE);
-//                sendbitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-//                image = stream.toByteArray();
-//                bundle.putByteArray("image",image);
-//                bundle.putStringArray("text", new String[]{title});
-//                bundle.putStringArray("content", new String[]{content});
-//                bundle.putStringArray("nickname", new String[]{name});
-
-//               Intent intent = new Intent(getApplicationContext(), subcommunity.class);
-//                intent.putExtras(bundle);
-            }
-        });
-
 
 
         imageview = (ImageView) findViewById(R.id.imageView);
@@ -104,6 +75,7 @@ public class Writecommunity extends AppCompatActivity {
             }
         });
         //글 작성하기 누를 시
+        btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
 
             @Override

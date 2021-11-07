@@ -1,5 +1,6 @@
 package com.example.dog;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
@@ -27,7 +28,6 @@ public class Community extends AppCompatActivity {
     private TextView t;
     private String TAG = getClass().getSimpleName();
     private ListView listView;
-    Button write_btn,map_btn,community_btn,option_btn;
     private TextView nickname;
 
     String userName = "";
@@ -47,7 +47,7 @@ public class Community extends AppCompatActivity {
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
 
-        nickname.setText(userName);*/
+       /* nickname.setText(userName);*/
 
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
