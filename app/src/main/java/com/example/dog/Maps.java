@@ -233,6 +233,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             }
         });
     }
+    //화면회전 초기화 방지
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
