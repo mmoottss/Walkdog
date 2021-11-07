@@ -81,7 +81,6 @@ public class Writecommunity extends AppCompatActivity {
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
-                                startActivity(intent);
                                 finish();
                                 Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
                             } else {
@@ -143,7 +142,6 @@ public class Writecommunity extends AppCompatActivity {
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
-                startActivity(intent);
                 finish();
             }
         });

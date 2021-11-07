@@ -41,7 +41,7 @@
                     android:background="@color/theme_color">
 
                         <Button
-                            android:id="@+id/mapmenu"
+                            android:id="@+id/map_btn"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
