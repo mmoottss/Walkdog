@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,9 @@ public class Community extends AppCompatActivity {
     private TextView t;
     private String TAG = getClass().getSimpleName();
     private ListView listView;
+    private TextView nickname;
+
+    String userName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class Community extends AppCompatActivity {
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
+
+       /* nickname.setText(userName);*/
 
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +65,8 @@ public class Community extends AppCompatActivity {
         option_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setContentView(R.layout.activity_option);
+                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
             }
         });
 
@@ -74,6 +81,13 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userName", userName);
                 startActivity(intent);
                 finish();
+
+                // 동적생성
+                // 방법을 찾는다면 글쓰기창의 저장버튼을 눌렀을 때 생성되도록 수정하기
+                // 생성된 레이아웃에 데이터 적용법도 찾기!
+                subcommunity n_layout = new subcommunity(getApplicationContext());
+                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
+                con.addView(n_layout);
             }
         });
         //글
