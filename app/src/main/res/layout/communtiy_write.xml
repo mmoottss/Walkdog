@@ -6,12 +6,22 @@
     android:padding="16dp"
     android:orientation="vertical">
 
+    <EditText
+        android:id="@+id/title_et"
+        android:layout_width="match_parent"
+        android:layout_height="207dp"
+        android:layout_weight="1"
+        android:background="#eeeeee"
+        android:hint="제목을 입력하세요."
+        android:padding="16dp" />
+
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="55dp"
+        android:layout_height="46dp"
         android:layout_gravity="center_vertical|center_horizontal"
         android:scaleType="fitCenter"
+        android:translationX="-160dp"
         app:srcCompat="@drawable/ic_image" />
 
     <EditText
@@ -28,8 +38,8 @@
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="저장하기"
-        android:textColor="#FFFFFF"
-        android:background="#C62828"/>
+        android:background="#C62828"
+        android:text="글 작성하기"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>

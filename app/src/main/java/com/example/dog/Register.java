@@ -1,5 +1,6 @@
 package com.example.dog;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -26,7 +28,7 @@ import java.util.Map;
 public class Register extends AppCompatActivity {
 
     private EditText reg_id, reg_pass, reg_nickname;
-    private Button register_confirm, btn_back;
+    private Button register_confirm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,18 +39,6 @@ public class Register extends AppCompatActivity {
         reg_id = findViewById(R.id.reg_id);
         reg_pass = findViewById(R.id.reg_pass);
         reg_nickname = findViewById(R.id.reg_nickcname);
-
-        //뒤로가기 버튼을 눌렀을 때
-        btn_back = findViewById(R.id.reg_back);
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Register.this, Login.class);
-                finishActivity(0);
-                startActivity(intent);
-            }
-        });
-
 
         // 회원가입 버튼을 눌렀을 때
         register_confirm = findViewById(R.id.register_confirm);
@@ -70,6 +60,7 @@ public class Register extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),"회원가입 성공.",Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(Register.this, Login.class);
                                 startActivity(intent);
+                                finish();
                             } else {
                                 Toast.makeText(getApplicationContext(),"회원가입에 실패.",Toast.LENGTH_SHORT).show();
                                 return;
@@ -111,4 +102,27 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    //뒤로가기 누를 시 회원가입을 하시겠습니까? 출력
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("안내");
+        builder.setMessage("회원가입을 취소하시겠습니까?");
+
+        builder.setPositiveButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+
+        });
+        builder.setNegativeButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Register.this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.create().show();
+    }
 }
