@@ -222,7 +222,6 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
                 startActivity(intent);
-                finish();
             }
         });
         //하단바 설정창으로 이동
