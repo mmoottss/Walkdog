@@ -25,13 +25,11 @@ import java.util.ArrayList;
 
 public class Community extends AppCompatActivity {
 
+
     Button write_btn, map_btn, community_btn, option_btn;
     private TextView t;
     private String TAG = getClass().getSimpleName();
     private ListView listView;
-    private TextView nickname;
-
-    String userName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,16 @@ public class Community extends AppCompatActivity {
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
+        String communityTitle = intent.getExtras().getString("communityTitle");
+        String communityContent = intent.getExtras().getString("communityContent");
 
-       /* nickname.setText(userName);*/
+        TextView name = (TextView)findViewById(R.id.reg_nickcname);
+        TextView title = (TextView)findViewById(R.id.title_et);
+        TextView content = (TextView)findViewById(R.id.content_et);
+
+        //글쓰기에서 넘어오는 제목,내용 동적생성한 레이아웃에 적용하기.
+        //subcommunity2 삭제할지 말지 고민중......
+
 
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,9 +94,11 @@ public class Community extends AppCompatActivity {
                 // 동적생성
                 // 방법을 찾는다면 글쓰기창의 저장버튼을 눌렀을 때 생성되도록 수정하기
                 // 생성된 레이아웃에 데이터 적용법도 찾기!
-                subcommunity n_layout = new subcommunity(getApplicationContext());
-                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
-                con.addView(n_layout);
+
+//                subcommunity n_layout = new subcommunity(getApplicationContext());
+//                LinearLayout con = (LinearLayout) findViewById(R.id.LinLayout);
+//                con.addView(n_layout);
+
             }
         });
         //글

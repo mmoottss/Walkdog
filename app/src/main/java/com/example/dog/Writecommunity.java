@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +49,7 @@ public class Writecommunity extends AppCompatActivity {
 
     String userName = "";
     String title, content, name;
+    ArrayList<SampleItem> list;
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -77,7 +79,6 @@ public class Writecommunity extends AppCompatActivity {
         //글 작성하기 누를 시
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 String communityTitle = title_et.getText().toString();
@@ -92,15 +93,26 @@ public class Writecommunity extends AppCompatActivity {
                             if (success) {
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
-                                Intent intent = new Intent(Writecommunity.this, subcommunity.class);
+//                                Intent intent = new Intent(Writecommunity.this, Community.class);
+                                //userid 받을 intent
+                                Intent intent = getIntent();
                                 String userID = intent.getStringExtra("userID");
-                                String userPassword = intent.getStringExtra("userPassword");
-                                String userName = intent.getStringExtra("userName");
-                                intent.putExtra("userID", userID);
-                                intent.putExtra("userPassword", userPassword);
-                                intent.putExtra("userName", userName);
-                                intent.putExtra("communityTitle", communityTitle);
-                                intent.putExtra("communityContent", communityContent);
+//                                String userPassword = intent.getStringExtra("userPassword");
+//                                String userName = intent.getStringExtra("userName");
+//                                intent.putExtra("userID", userID);
+//                                intent.putExtra("userPassword", userPassword);
+//                                intent.putExtra("userName", userName);
+//                                intent.putExtra("communityTitle", communityTitle);
+//                                intent.putExtra("communityContent", communityContent);
+//                                startActivity(intent);
+                                //subcommunity에 넘길 값 list에 저장 후 동적 생성
+                                list = new ArrayList<>();
+                                SampleItem sampleItem = new SampleItem(userID, communityTitle, communityContent, "");
+                                list.add(sampleItem);
+                                subcommunity sub = new subcommunity(getApplicationContext(), list.get(0));
+                                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
+                                con.addView(sub);
+                                //여기까지!
                                 finish();
                                 Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
                             } else {
