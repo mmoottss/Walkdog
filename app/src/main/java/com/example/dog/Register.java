@@ -9,6 +9,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -33,8 +34,7 @@ public class Register extends AppCompatActivity {
 
     private EditText reg_id, reg_pass, reg_nickname;
     private Button register_confirm, id_check, name_check;
-    private long colorframe = 0;
-    public int idcheck = 0, namecheck = 0;
+    public int idcheck = 0, namecheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,6 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
                             if(!success) {
@@ -124,6 +123,7 @@ public class Register extends AppCompatActivity {
                                 builder.create().show();
                                 reg_nickname.setInputType(InputType.TYPE_NULL);
                                 namecheck += 1;
+
                             } if(success) {
                                 Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임입니다.", Toast.LENGTH_SHORT).show();
                                 return;
