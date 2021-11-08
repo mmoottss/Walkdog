@@ -217,11 +217,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         community_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Maps.this, Community.class);
+                Log.v(TAG,"2"+getIntent());Intent intent = new Intent(Maps.this, Community.class);
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -229,8 +228,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         option_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_option);
-                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
+                Intent intent = new Intent(Maps.this, option_act.class);
+                startActivity(intent);
             }
         });
     }
