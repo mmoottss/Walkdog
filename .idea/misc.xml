@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjects/Walkdog/app/src/main/res/drawable/border.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Walkdog/app/src/main/res/drawable/solid_button.xml" value="0.2361111111111111" />
+        <entry key="..\:/AndroidStudioProjects/Walkdog/app/src/main/res/layout/activity_community.xml" value="0.2" />
+        <entry key="..\:/AndroidStudioProjects/Walkdog/app/src/main/res/layout/activity_option.xml" value="0.12335359675785208" />
+        <entry key="..\:/AndroidStudioProjects/Walkdog/app/src/main/res/layout/communtiy_write.xml" value="0.16666666666666666" />
+        <entry key="..\:/AndroidStudioProjects/Walkdog/app/src/main/res/layout/sub_community.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/bsi42/Walkdog/app/src/main/res/layout/second_ac.xml" value="0.18115942028985507" />
         <entry key="..\:/Users/mn05074/AndroidStudioProjects/dog/app/src/main/res/font/alfa_slab_one.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/mn05074/AndroidStudioProjects/dog/app/src/main/res/font/archivo_black.xml" value="0.15833333333333333" />
@@ -36,7 +42,7 @@
         <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/activity_login.xml" value="0.2046875" />
         <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/activity_maps.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/activity_option.xml" value="0.15989583333333332" />
-        <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/activity_register.xml" value="0.33" />
+        <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/activity_register.xml" value="0.32065217391304346" />
         <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/anim_slide_in_left.xml" value="0.11770833333333333" />
         <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/anim_slide_in_right.xml" value="0.11770833333333333" />
         <entry key="..\:/Users/skwhd/AndroidStudioProjects/Walkdog/ddd/app/src/main/res/layout/communtiy_write.xml" value="0.3129528985507246" />
