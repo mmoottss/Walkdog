@@ -6,12 +6,17 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.UrlQuerySanitizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,15 +26,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Community extends AppCompatActivity {
 
 
+    private static final String KEY_DATA = "KEY_DATA";
     Button write_btn, map_btn, community_btn, option_btn;
-    private TextView t;
+    private TextView title;
     private String TAG = getClass().getSimpleName();
     private ListView listView;
+
+
+    /*@Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        String title_ = title.getText().toString();
+        outState.putString("communityTitle",title_);
+    }*/ //데이터 번들에 저장 (안됨. 공백 유지됨)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +64,36 @@ public class Community extends AppCompatActivity {
         String communityTitle = intent.getExtras().getString("communityTitle");
         String communityContent = intent.getExtras().getString("communityContent");
 
-        TextView name = (TextView)findViewById(R.id.reg_nickcname);
-        TextView title = (TextView)findViewById(R.id.title_et);
-        TextView content = (TextView)findViewById(R.id.content_et);
+        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
+        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
+        communityImage.setImageBitmap(bitmap);
+        // 이미지를 bitmap에 저장해서 그대로 옮기는 거.
+
+//        byte[] arr = getIntent().getByteArrayExtra("image");
+//        Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+//        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
+//        communityImage.setImageBitmap(image);
+        // 이미지를 bitmap에 저장해서 byteArray에 넣어서 옮기는 거.
+
+
+        TextView name = (TextView)findViewById(R.id.cont_name);
+        TextView title = (TextView)findViewById(R.id.cont_title);
+        TextView content = (TextView)findViewById(R.id.cont_text);
+//        ImageView image = (ImageView)findViewById(R.id.cont_image);
 
         //글쓰기에서 넘어오는 제목,내용 동적생성한 레이아웃에 적용하기.
-        //subcommunity2 삭제할지 말지 고민중......
+
+        title.setText(communityTitle);
+//        name.setText(userName);  //시작할 때부터 있어서 고민해봐야 함
+//        image.setImageURI(communityImage);
+        content.setText(communityContent);
+
+//        if(savedInstanceState != null) {
+//            String title_ = savedInstanceState.getString("communityTitle");
+//            title.setText(communityTitle);
+//        } //액티비티 전환시 데이터 유지할 때 쓸 수 있는 것 같지만 공백이 유지됨.
+
+
 
 
         map_btn.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +103,6 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -72,10 +111,8 @@ public class Community extends AppCompatActivity {
         option_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.activity_option);
-                getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new option(), null).commit();
-                /*Intent intent = new Intent(Community.this, option_act.class);
-                startActivity(intent);*/ // 옵션 추가되면 받은 후 이것만 열기
+                Intent intent = new Intent(Community.this, option_act.class);
+                startActivity(intent);
             }
         });
 
@@ -105,6 +142,8 @@ public class Community extends AppCompatActivity {
 
     }
 
+
+
     //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
     @Override
     public void onBackPressed() {
@@ -127,4 +166,6 @@ public class Community extends AppCompatActivity {
         });
         builder.create().show();
     }
+
+
 }
