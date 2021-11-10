@@ -6,12 +6,17 @@ import androidx.core.app.ActivityCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.UrlQuerySanitizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,15 +26,26 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Community extends AppCompatActivity {
 
+
+    private static final String KEY_DATA = "KEY_DATA";
     Button write_btn, map_btn, community_btn, option_btn;
-    private TextView t;
+    private TextView title;
     private String TAG = getClass().getSimpleName();
     private ListView listView;
-    private TextView nickname;
+
+
+    /*@Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        String title_ = title.getText().toString();
+        outState.putString("communityTitle",title_);
+    }*/ //데이터 번들에 저장 (안됨. 공백 유지됨)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +61,40 @@ public class Community extends AppCompatActivity {
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
+        String communityTitle = intent.getExtras().getString("communityTitle");
+        String communityContent = intent.getExtras().getString("communityContent");
 
-       /* nickname.setText(userName);*/
+        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
+        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
+        communityImage.setImageBitmap(bitmap);
+        // 이미지를 bitmap에 저장해서 그대로 옮기는 거.
+
+//        byte[] arr = getIntent().getByteArrayExtra("image");
+//        Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
+//        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
+//        communityImage.setImageBitmap(image);
+        // 이미지를 bitmap에 저장해서 byteArray에 넣어서 옮기는 거.
+
+
+        TextView name = (TextView)findViewById(R.id.cont_name);
+        TextView title = (TextView)findViewById(R.id.cont_title);
+        TextView content = (TextView)findViewById(R.id.cont_text);
+//        ImageView image = (ImageView)findViewById(R.id.cont_image);
+
+        //글쓰기에서 넘어오는 제목,내용 동적생성한 레이아웃에 적용하기.
+
+        title.setText(communityTitle);
+//        name.setText(userName);  //시작할 때부터 있어서 고민해봐야 함
+//        image.setImageURI(communityImage);
+        content.setText(communityContent);
+
+//        if(savedInstanceState != null) {
+//            String title_ = savedInstanceState.getString("communityTitle");
+//            title.setText(communityTitle);
+//        } //액티비티 전환시 데이터 유지할 때 쓸 수 있는 것 같지만 공백이 유지됨.
+
+
+
 
         map_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,18 +126,23 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
                 startActivity(intent);
+                finish();
 
                 // 동적생성
                 // 방법을 찾는다면 글쓰기창의 저장버튼을 눌렀을 때 생성되도록 수정하기
                 // 생성된 레이아웃에 데이터 적용법도 찾기!
-                subcommunity n_layout = new subcommunity(getApplicationContext());
-                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
-                con.addView(n_layout);
+
+//                subcommunity n_layout = new subcommunity(getApplicationContext());
+//                LinearLayout con = (LinearLayout) findViewById(R.id.LinLayout);
+//                con.addView(n_layout);
+
             }
         });
         //글
 
     }
+
+
 
     //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
     @Override
@@ -113,4 +166,6 @@ public class Community extends AppCompatActivity {
         });
         builder.create().show();
     }
+
+
 }

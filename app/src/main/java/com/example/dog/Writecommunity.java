@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,9 +46,11 @@ public class Writecommunity extends AppCompatActivity {
     Bundle bundle;
     Bitmap sendbitmap;
     byte[] image = new byte[100];
+    Uri selectedImageUri;
 
     String userName = "";
     String title, content, name;
+    ArrayList<SampleItem> list;
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -77,7 +80,6 @@ public class Writecommunity extends AppCompatActivity {
         //글 작성하기 누를 시
         btnSave = (Button) findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 String communityTitle = title_et.getText().toString();
@@ -89,6 +91,7 @@ public class Writecommunity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
+
                             if (success) {
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
@@ -96,11 +99,35 @@ public class Writecommunity extends AppCompatActivity {
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
                                 String userName = intent.getStringExtra("userName");
+
+//                                String image = selectedImageUri.toString();  //이미지 string으로 바꾸는 거
+
+                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(),GET_GALLERY_IMAGE);
+//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                sendBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+//                                byte[] byteArray = stream.toByteArray();
+                                intent.putExtra("image",sendBitmap);
+                                // 이미지 보내는 거. byteArray에 넣어서 하면 튕김.
+                                // 안 넣으면 튕기는 건 아닌데 이미지 이동이 안됨.
+
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
+
+                                startActivity(intent);
+
+                                //subcommunity에 넘길 값 list에 저장 후 동적 생성
+//                                list = new ArrayList<>();
+//                                SampleItem sampleItem = new SampleItem(userName, communityTitle, communityContent, "");
+//                                list.add(sampleItem);
+//
+//                                subcommunity sub = new subcommunity(getApplicationContext());
+//                                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
+//                                con.addView(sub);
+
+                                //여기까지!
                                 finish();
                                 Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
                             } else {
@@ -132,7 +159,7 @@ public class Writecommunity extends AppCompatActivity {
         super.onActivityResult(requsetCode, resultCode, data);
         if (requsetCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
+            selectedImageUri = data.getData();
             imageview.setImageURI(selectedImageUri);
         }
 
