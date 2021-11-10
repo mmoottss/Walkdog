@@ -100,6 +100,7 @@ public class Community extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Community.this, Maps.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
@@ -112,6 +113,10 @@ public class Community extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Community.this, option_act.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });

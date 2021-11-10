@@ -17,11 +17,20 @@ public class option_act extends AppCompatActivity {
         community_button = findViewById(R.id.community);
         map_button = findViewById(R.id.mapmenu);
 
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra("userID");
+        String userPassword = intent.getStringExtra("userPassword");
+        String userName = intent.getStringExtra("userName");
+
         //하단바 커뮤니티로 이동
         community_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(option_act.this, Community.class);
+                Intent intent = new Intent(getApplicationContext(), Community.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
@@ -31,6 +40,10 @@ public class option_act extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Maps.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
