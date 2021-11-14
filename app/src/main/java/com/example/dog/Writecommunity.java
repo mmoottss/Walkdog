@@ -39,15 +39,8 @@ public class Writecommunity extends AppCompatActivity {
     private EditText title_et,content_et;
     private TextView nickname;
     private Button btnSave;
-    Bundle bundle;
-    Bitmap sendbitmap;
     byte[] image = new byte[100];
     Uri uri;
-
-    String userName = "";
-    String title, content, name;
-    ArrayList<SampleItem> list;
-
 
     @Override
     // 갤러리에 있는 사진을 글쓰는 창에 올리는 코드
@@ -100,14 +93,18 @@ public class Writecommunity extends AppCompatActivity {
                             boolean success = jsonObject.getBoolean("success");
 
                             if (success) {
+                                Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
-                                String communityimg = jsonObject.getString("communityimg");
                                 Intent intent = new Intent(Writecommunity.this, Community.class);
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
                                 String userName = intent.getStringExtra("userName");
-
+                                intent.putExtra("userID", userID);
+                                intent.putExtra("userPassword", userPassword);
+                                intent.putExtra("userName", userName);
+                                intent.putExtra("communityTitle", communityTitle);
+                                intent.putExtra("communityContent", communityContent);
 //                                String uri = selectedImageUri.toString(); //이미지 string으로 바꾸는 거
 //                                String selectedImageUri = intent.getStringExtra("selectedImageUri");
 //                                int image =  Integer.parseInt(uri);
@@ -128,14 +125,6 @@ public class Writecommunity extends AppCompatActivity {
                                 // 이유는 모르겠지만 사진 한 번만 보낼 수 있음. 그 후로는 작성실패뜸. 이유 모름.
                                 // 사진 들어간 후로 작성 실패.
 
-
-                                intent.putExtra("userID", userID);
-                                intent.putExtra("userPassword", userPassword);
-                                intent.putExtra("userName", userName);
-                                intent.putExtra("communityTitle", communityTitle);
-                                intent.putExtra("communityContent", communityContent);
-                                intent.putExtra("communityimg", communityimg);
-
                                 startActivity(intent);
 
                                 //subcommunity에 넘길 값 list에 저장 후 동적 생성
@@ -150,7 +139,7 @@ public class Writecommunity extends AppCompatActivity {
 
                                 //여기까지!
                                 finish();
-                                Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
+
                             } else {
                                 Toast.makeText(getApplicationContext(), "글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                 return;
