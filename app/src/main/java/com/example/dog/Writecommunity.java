@@ -39,15 +39,8 @@ public class Writecommunity extends AppCompatActivity {
     private EditText title_et,content_et;
     private TextView nickname;
     private Button btnSave;
-    Bundle bundle;
-    Bitmap sendbitmap;
     byte[] image = new byte[100];
     Uri uri;
-
-    String userName = "";
-    String title, content, name;
-    ArrayList<SampleItem> list;
-
 
     @Override
     // 갤러리에 있는 사진을 글쓰는 창에 올리는 코드
@@ -100,9 +93,11 @@ public class Writecommunity extends AppCompatActivity {
                             boolean success = jsonObject.getBoolean("success");
 
                             if (success) {
+
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
                                 String communityimg = jsonObject.getString("communityimg");
+
                                 Intent intent = new Intent(Writecommunity.this, Community.class);
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
@@ -112,7 +107,7 @@ public class Writecommunity extends AppCompatActivity {
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
-                                intent.putExtra("communityimg", communityimg);
+                                intent.putExtra("uri", uri);
 //                                String uri = selectedImageUri.toString(); //이미지 string으로 바꾸는 거
 //                                String selectedImageUri = intent.getStringExtra("selectedImageUri");
 //                                int image =  Integer.parseInt(uri);
@@ -147,7 +142,7 @@ public class Writecommunity extends AppCompatActivity {
 
                                 //여기까지!
                                 finish();
-
+                                Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), "글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                 return;
