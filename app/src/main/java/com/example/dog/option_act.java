@@ -1,6 +1,5 @@
 package com.example.dog;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +19,6 @@ public class option_act extends AppCompatActivity implements PreferenceFragmentC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
-        fragmentManager = getSupportFragmentManager();
         community_button = findViewById(R.id.community);
         map_button = findViewById(R.id.mapmenu);
 
@@ -37,7 +35,11 @@ public class option_act extends AppCompatActivity implements PreferenceFragmentC
         community_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(option_act.this, Community.class);
+                Intent intent = new Intent(getApplicationContext(), Community.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
@@ -47,6 +49,10 @@ public class option_act extends AppCompatActivity implements PreferenceFragmentC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Maps.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });

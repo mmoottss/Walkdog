@@ -218,10 +218,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Maps.this, Community.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("userID", userID);
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });
@@ -230,10 +230,15 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Maps.this, option_act.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("userID", userID);
+                intent.putExtra("userPassword", userPassword);
+                intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
     }
+    //화면회전 초기화 방지
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
