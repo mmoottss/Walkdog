@@ -42,11 +42,25 @@ public class Writecommunity extends AppCompatActivity {
     Bundle bundle;
     Bitmap sendbitmap;
     byte[] image = new byte[100];
-    Uri selectedImageUri;
+    Uri uri;
 
     String userName = "";
     String title, content, name;
     ArrayList<SampleItem> list;
+
+
+    @Override
+    // 갤러리에 있는 사진을 글쓰는 창에 올리는 코드
+    protected void onActivityResult(int requsetCode, int resultCode, Intent data) {
+        super.onActivityResult(requsetCode, resultCode, data);
+        if (requsetCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            uri = data.getData();
+            img_et.setImageURI(uri);
+        }
+
+    }
+
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -59,7 +73,6 @@ public class Writecommunity extends AppCompatActivity {
         //textview 내용을 string으로 저장
         title_et.getText().toString();
         content_et.getText().toString();
-        Uri uri = null;
 //        name = new String(nickname.getText().toString());
 
         img_et.setOnClickListener(new View.OnClickListener() {
@@ -80,9 +93,6 @@ public class Writecommunity extends AppCompatActivity {
                 String communityContent = content_et.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    private MediaBrowser imageAdapter;
-
-                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -113,7 +123,7 @@ public class Writecommunity extends AppCompatActivity {
                                 // 이미지 보내는 거. byteArray에 넣어서 하면 튕김.
                                 // 안 넣으면 튕기는 건 아닌데 이미지 이동이 안됨.
 
-                                intent.putExtra("selectedImageUri",selectedImageUri);
+                                //intent.putExtra("selectedImageUri",selectedImageUri);
                                 //uri로 넘기는 방법.
                                 // 이유는 모르겠지만 사진 한 번만 보낼 수 있음. 그 후로는 작성실패뜸. 이유 모름.
                                 // 사진 들어간 후로 작성 실패.
@@ -124,6 +134,7 @@ public class Writecommunity extends AppCompatActivity {
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
+                                intent.putExtra("communityimg", communityimg);
 
                                 startActivity(intent);
 
@@ -161,18 +172,6 @@ public class Writecommunity extends AppCompatActivity {
                 queue.add(exportRequest);
             }
         });
-    }
-
-    @Override
-    // 갤러리에 있는 사진을 글쓰는 창에 올리는 코드
-    protected void onActivityResult(int requsetCode, int resultCode, Intent data) {
-        super.onActivityResult(requsetCode, resultCode, data);
-        if (requsetCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            img_et.setImageURI(selectedImageUri);
-        }
-
     }
 
     //뒤로가기 누를 시 글 작성을 취소하시겠습니까? 출력
