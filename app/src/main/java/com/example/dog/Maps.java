@@ -58,7 +58,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
     private static final String TAG = "Maps";
     private static final int TIME = 2000;
     private static final int DISTANCE = 4;
-    private static int search_day = 1;
+    private static int search_day = 10;
     private static final double CHECK_POINT = 0.00002;
     private static final int CHECK_TIME = 60000;// 1000당 1초
     private GoogleMap mMap;
@@ -329,7 +329,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         }
     }
     // 경로 저장
-    void FileWrite(LatLng tmp_location,LatLng location,Long time) {
+    void FileWrite(LatLng tmp_location,LatLng cur_location,Long time) {
         if (Build.VERSION.SDK_INT >= 23 && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT >= 23 &&
                 checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -340,24 +340,26 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
         } else {
-            String str = tmp_location+"->"+location+"time "+time;
-            File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/loc_data"); // 저장 경로
-            if (!saveFile.exists()) { // 폴더 없을 경우
-                saveFile.mkdir(); // 폴더 생성
-            }
-            try {
-                long now = System.currentTimeMillis(); // 현재시간 받아오기
-                Date date = new Date(now); // Date 객체 생성
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-                String nowTime = sdf.format(date);
+            if (!tmp_location.equals(cur_location)) {
+                String str = tmp_location + "->" + cur_location + "time " + time;
+                File saveFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/loc_data"); // 저장 경로
+                if (!saveFile.exists()) { // 폴더 없을 경우
+                    saveFile.mkdir(); // 폴더 생성
+                }
+                try {
+                    long now = System.currentTimeMillis(); // 현재시간 받아오기
+                    Date date = new Date(now); // Date 객체 생성
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    String nowTime = sdf.format(date);
 
-                BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile +"/"+nowTime+".txt", true));
-                buf.append(str); // 파일 쓰기
-                buf.newLine(); // 개행
-                buf.close();
-            } catch (FileNotFoundException e) {
-            } catch (IOException e) {
-                e.printStackTrace();
+                    BufferedWriter buf = new BufferedWriter(new FileWriter(saveFile + "/" + nowTime + ".txt", true));
+                    buf.append(str); // 파일 쓰기
+                    buf.newLine(); // 개행
+                    buf.close();
+                } catch (FileNotFoundException e) {
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -510,6 +512,10 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
             default:return 0xff330020;
         }
     }
+    //location_equal(ary.get(j).get(i).getPoints().get(0), poly.getPoints().get(0)) ||
+    //     location_equal(ary.get(j).get(i).getPoints().get(0), poly.getPoints().get(1)) ||
+    //     location_equal(ary.get(j).get(i).getPoints().get(1), poly.getPoints().get(0)) ||
+    //     location_equal(ary.get(j).get(i).getPoints().get(1), poly.getPoints().get(1)))
     //겹치는 경로 개수결정
     int polyCompare(Polyline poly,Long time){
         int count=0;
@@ -517,10 +523,8 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         time_ary.add(time);
         int time_flag=0;
         for(int j=0;j<ary.size();j++) {
-            for (int i = 0; i < ary.get(j).size(); i++) {//StartPoint or EndPoint가 겹칠때
-                if (location_equal(ary.get(j).get(i).getPoints().get(0), poly.getPoints().get(0)) ||
-                        location_equal(ary.get(j).get(i).getPoints().get(0), poly.getPoints().get(1)) ||
-                        location_equal(ary.get(j).get(i).getPoints().get(1), poly.getPoints().get(0)) ||
+            for (int i = 0; i < ary.get(j).size(); i++) {//이전지점의 Start,End 와 현재의 EndPoint가 겹칠때
+                if (location_equal(ary.get(j).get(i).getPoints().get(0), poly.getPoints().get(1)) ||
                         location_equal(ary.get(j).get(i).getPoints().get(1), poly.getPoints().get(1))) {
                     for (int k = 0; k < time_ary.size(); k++) {
                         if (timeline.get(j).get(i) < time_ary.get(k) + CHECK_TIME &&
