@@ -3,27 +3,20 @@ package com.example.dog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.ByteArrayOutputStream;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
@@ -42,7 +35,7 @@ import java.util.Map;
 public class Writecommunity extends AppCompatActivity {
 
     private final int GET_GALLERY_IMAGE = 200;
-    private ImageView imageview;
+    private ImageView img_et;
     private EditText title_et,content_et;
     private TextView nickname;
     private Button btnSave;
@@ -62,16 +55,14 @@ public class Writecommunity extends AppCompatActivity {
 
         title_et = (EditText) findViewById(R.id.title_et);
         content_et = (EditText) findViewById(R.id.content_et);
+        img_et = (ImageView) findViewById(R.id.img_et);
         //textview 내용을 string으로 저장
         title_et.getText().toString();
         content_et.getText().toString();
-        title = new String(title_et.getText().toString());
-        content = new String(content_et.getText().toString());
+        Uri uri = null;
 //        name = new String(nickname.getText().toString());
 
-
-        imageview = (ImageView) findViewById(R.id.imageView);
-        imageview.setOnClickListener(new View.OnClickListener() {
+        img_et.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
@@ -101,6 +92,7 @@ public class Writecommunity extends AppCompatActivity {
                             if (success) {
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
+                                String communityimg = jsonObject.getString("communityimg");
                                 Intent intent = new Intent(Writecommunity.this, Community.class);
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
@@ -160,11 +152,11 @@ public class Writecommunity extends AppCompatActivity {
                     }
                 };
                 // 서버로 Volley를 이용해서 요청
-                WriteRequest writeRequest = new WriteRequest(communityTitle, communityContent, responseListener);
+                WriteRequest writeRequest = new WriteRequest(communityTitle, communityContent, uri, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(Writecommunity.this);
                 queue.add(writeRequest);
 
-                ExportRequest exportRequest = new ExportRequest(communityTitle, communityContent, responseListener);
+                ExportRequest exportRequest = new ExportRequest(communityTitle, communityContent, uri, responseListener);
                 Volley.newRequestQueue(Writecommunity.this); //////////////////////////////////////////////////////////
                 queue.add(exportRequest);
             }
@@ -178,7 +170,7 @@ public class Writecommunity extends AppCompatActivity {
         if (requsetCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             selectedImageUri = data.getData();
-            imageview.setImageURI(selectedImageUri);
+            img_et.setImageURI(selectedImageUri);
         }
 
     }
@@ -219,12 +211,13 @@ public class Writecommunity extends AppCompatActivity {
         final static String URL = "http://skwhdgns111.ivyro.net/community_save.php";
         private Map<String, String> map;
 
-        public WriteRequest(String communityTitle, String communityContent, Response.Listener<String> listener) {
+        public WriteRequest(String communityTitle, String communityContent, Uri communityimg, Response.Listener<String> listener) {
             super(Method.POST, URL, listener, null);
 
             map = new HashMap<>();
             map.put("communityTitle", communityTitle);
             map.put("communityContent", communityContent);
+            map.put("communityimg", communityimg+"");
         }
 
         @Override
@@ -238,12 +231,13 @@ public class Writecommunity extends AppCompatActivity {
         final static String URL = "http://skwhdgns111.ivyro.net/community_export.php";
         private Map<String, String> map;
 
-        public ExportRequest(String communityTitle, String communityContent, Response.Listener<String> listener) {
+        public ExportRequest(String communityTitle, String communityContent, Uri communityimg, Response.Listener<String> listener) {
             super(Method.POST, URL, listener, null);
 
             map = new HashMap<>();
             map.put("communityTitle", communityTitle);
             map.put("communityContent", communityContent);
+            map.put("communityimg", communityimg+"");
         }
 
         @Override
