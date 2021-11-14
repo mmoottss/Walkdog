@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="마이페이지">
+        <Preference
+            android:key="Log"
+            android:title="계정 관리"
+            app:fragment="com.example.dog.option_log">
+        </Preference>
+        <!--계정 -> 프로필(견주, 반려동물)변경, 로그아웃, 탈퇴-->
+        <Preference
+            android:key="Route"
+            android:title="경로 관리"
+            app:fragment="com.example.dog.option_route"/>
+        <!--경로 초기화, 데이터 삭제, (+)견종 필터링 등등...-->
+        <Preference
+            android:key="Alarm"
+            android:title="알림 설정"
+            app:fragment="com.example.dog.option_alarm"/>
+        <!--알림 -> 알림on/off, 알림 on 시 소리, 진동설정-->
+        <SwitchPreference
+            android:key="night_mode"
+            android:defaultValue="false"
+            android:title="야간 모드"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="고객지원">
+        <Preference
+            android:key="developers"
+            android:title="개발자 정보">
+        </Preference>
+        <!--문의하기 클릭시 메일 보내는 창으로 넘어감-->
+        <Preference
+            android:key="contect"
+            android:title="문의하기">
+            <intent
+                android:action="android.intent.action.SENDTO"
+                android:data="mailto:ck1808@naver.com"/>
+        </Preference>
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

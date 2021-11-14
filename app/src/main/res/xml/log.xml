@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceCategory android:title="계정 관리">
+    <Preference
+        android:key="profile"
+        android:title="닉네임 변경" />
+    <!--        프로필 관리 버튼 클릭 시 activity_profile로 이동-->
+    <!--        프로필 -> 프로필 사진, 닉네임(아이디), 반려견 프로필-->
+    <Preference
+        android:key="change_pw"
+        android:title="비밀번호 변경"/>
+    <Preference
+        android:key="LogOut"
+        android:title="로그아웃"/>
+    <Preference
+        android:key="Leave"
+        android:title="탈퇴하기"/>
+</PreferenceCategory>
+</androidx.preference.PreferenceScreen>

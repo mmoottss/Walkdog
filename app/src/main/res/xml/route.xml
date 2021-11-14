@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="경로 관리">
+        <Preference
+            android:key="route_accu"
+            android:title="경로 누적일 변경"/>
+        <Preference
+            android:key="route_reset"
+            android:title="현재 경로 초기화"/>
+        <Preference
+            android:key="route_delete"
+            android:title="누적 경로 삭제"/>
+    </PreferenceCategory>
+</androidx.preference.PreferenceScreen>
