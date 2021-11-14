@@ -54,9 +54,9 @@ public class Community extends AppCompatActivity {
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
+        Uri uri = Uri.parse("communityimg");
         String communityTitle = intent.getExtras().getString("communityTitle");
         String communityContent = intent.getExtras().getString("communityContent");
-        Uri imageuri = getIntent().getParcelableExtra("uri");
 
 //        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
 //        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
@@ -80,7 +80,7 @@ public class Community extends AppCompatActivity {
 
         title.setText(communityTitle);
 //        name.setText(userName);  //시작할 때부터 있어서 고민해봐야 함
-        image.setImageURI(imageuri);
+        image.setImageURI(uri);
         content.setText(communityContent);
 
 
