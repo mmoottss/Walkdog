@@ -96,6 +96,7 @@ public class Writecommunity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
+                                String communityimg = jsonObject.getString("communityimg");
                                 Intent intent = new Intent(Writecommunity.this, Community.class);
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
@@ -105,6 +106,7 @@ public class Writecommunity extends AppCompatActivity {
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
+                                intent.putExtra("communityimg", communityimg);
 //                                String uri = selectedImageUri.toString(); //이미지 string으로 바꾸는 거
 //                                String selectedImageUri = intent.getStringExtra("selectedImageUri");
 //                                int image =  Integer.parseInt(uri);
