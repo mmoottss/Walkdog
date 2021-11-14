@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.media.browse.MediaBrowser;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -86,6 +89,9 @@ public class Writecommunity extends AppCompatActivity {
                 String communityContent = content_et.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    private MediaBrowser imageAdapter;
+
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -100,15 +106,26 @@ public class Writecommunity extends AppCompatActivity {
                                 String userPassword = intent.getStringExtra("userPassword");
                                 String userName = intent.getStringExtra("userName");
 
-//                                String image = selectedImageUri.toString();  //이미지 string으로 바꾸는 거
+//                                String uri = selectedImageUri.toString(); //이미지 string으로 바꾸는 거
+//                                String selectedImageUri = intent.getStringExtra("selectedImageUri");
+//                                int image =  Integer.parseInt(uri);
+//
+//                                int imageResId = imageAdapter.getItem(image);
+//                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(), imageResId);
 
-                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(),GET_GALLERY_IMAGE);
+//                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(),GET_GALLERY_IMAGE);
 //                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
 //                                sendBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
 //                                byte[] byteArray = stream.toByteArray();
-                                intent.putExtra("image",sendBitmap);
+//                                intent.putExtra("image",sendBitmap);
                                 // 이미지 보내는 거. byteArray에 넣어서 하면 튕김.
                                 // 안 넣으면 튕기는 건 아닌데 이미지 이동이 안됨.
+
+                                intent.putExtra("selectedImageUri",selectedImageUri);
+                                //uri로 넘기는 방법.
+                                // 이유는 모르겠지만 사진 한 번만 보낼 수 있음. 그 후로는 작성실패뜸. 이유 모름.
+                                // 사진 들어간 후로 작성 실패.
+
 
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
@@ -122,7 +139,8 @@ public class Writecommunity extends AppCompatActivity {
 //                                list = new ArrayList<>();
 //                                SampleItem sampleItem = new SampleItem(userName, communityTitle, communityContent, "");
 //                                list.add(sampleItem);
-//
+
+                                //동적생성
 //                                subcommunity sub = new subcommunity(getApplicationContext());
 //                                LinearLayout con = (LinearLayout)findViewById(R.id.LinLayout);
 //                                con.addView(sub);

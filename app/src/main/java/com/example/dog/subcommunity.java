@@ -25,20 +25,20 @@ public class subcommunity extends LinearLayout {
         LayoutInflater inflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.sub_community,this,true);
 
-        /*TextView name = (TextView) findViewById(R.id.cont_name);
-        TextView title = (TextView) findViewById(R.id.cont_title);
-        TextView content = (TextView) findViewById(R.id.cont_text);
-        ImageView image = (ImageView) findViewById(R.id.cont_image);
-
-        //받은 값 적용
-        name.setText(sampleItem.getName());
-        title.setText(sampleItem.getTitle());
-        content.setText(sampleItem.getContent());
+//        TextView name = (TextView) findViewById(R.id.cont_name);
+//        TextView title = (TextView) findViewById(R.id.cont_title);
+//        TextView content = (TextView) findViewById(R.id.cont_text);
+//        ImageView image = (ImageView) findViewById(R.id.cont_image);
+//
+//        //받은 값 적용
+//        name.setText(sampleItem.getName());
+//        title.setText(sampleItem.getTitle());
+//        content.setText(sampleItem.getContent());
 
         //사진 띄우기
-        String s = new String(sampleItem.getImage());
-        Uri i = Uri.parse(s);
-        image.setImageURI(i);*/
+//        String s = new String(sampleItem.getImage());
+//        Uri i = Uri.parse(s);
+//        image.setImageURI(i);
 //        Glide.with(this).load(sampleItem.getImage().toString()).override(300,300).centerCrop().into(image);
     }
 }

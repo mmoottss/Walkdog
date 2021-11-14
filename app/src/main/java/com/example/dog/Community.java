@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.net.UrlQuerySanitizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class Community extends AppCompatActivity {
 
@@ -63,11 +65,13 @@ public class Community extends AppCompatActivity {
         String userName = intent.getStringExtra("userName");
         String communityTitle = intent.getExtras().getString("communityTitle");
         String communityContent = intent.getExtras().getString("communityContent");
+        Uri imageuri = getIntent().getParcelableExtra("selectedImageUri");
 
-        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
-        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
-        communityImage.setImageBitmap(bitmap);
+//        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
+//        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
+//        communityImage.setImageBitmap(bitmap);
         // 이미지를 bitmap에 저장해서 그대로 옮기는 거.
+
 
 //        byte[] arr = getIntent().getByteArrayExtra("image");
 //        Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
@@ -76,16 +80,16 @@ public class Community extends AppCompatActivity {
         // 이미지를 bitmap에 저장해서 byteArray에 넣어서 옮기는 거.
 
 
-        TextView name = (TextView)findViewById(R.id.cont_name);
+//        TextView name = (TextView)findViewById(R.id.cont_name);
         TextView title = (TextView)findViewById(R.id.cont_title);
         TextView content = (TextView)findViewById(R.id.cont_text);
-//        ImageView image = (ImageView)findViewById(R.id.cont_image);
+        ImageView image = (ImageView)findViewById(R.id.cont_image);
 
         //글쓰기에서 넘어오는 제목,내용 동적생성한 레이아웃에 적용하기.
 
         title.setText(communityTitle);
 //        name.setText(userName);  //시작할 때부터 있어서 고민해봐야 함
-//        image.setImageURI(communityImage);
+        image.setImageURI(imageuri);
         content.setText(communityContent);
 
 //        if(savedInstanceState != null) {
@@ -131,7 +135,7 @@ public class Community extends AppCompatActivity {
                 intent.putExtra("userPassword", userPassword);
                 intent.putExtra("userName", userName);
                 startActivity(intent);
-                finish();
+//                finish();
 
                 // 동적생성
                 // 방법을 찾는다면 글쓰기창의 저장버튼을 눌렀을 때 생성되도록 수정하기

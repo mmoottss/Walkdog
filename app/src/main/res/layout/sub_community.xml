@@ -13,19 +13,19 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_gravity="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cont_name"
-            android:textSize="11dp"
-            android:textColor="#D3D3D3"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_gravity="center" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/cont_name"-->
+<!--            android:textSize="11dp"-->
+<!--            android:textColor="#D3D3D3"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginLeft="5dp"-->
+<!--            android:layout_marginRight="5dp"-->
+<!--            android:layout_gravity="center" />-->
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
             android:id="@+id/cont_image"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
