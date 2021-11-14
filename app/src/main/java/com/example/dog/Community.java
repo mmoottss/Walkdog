@@ -39,6 +39,7 @@ public class Community extends AppCompatActivity {
     private TextView title;
     private String TAG = getClass().getSimpleName();
     private ListView listView;
+    Uri uri;
 
 
     /*@Override
@@ -66,7 +67,6 @@ public class Community extends AppCompatActivity {
         String communityTitle = intent.getExtras().getString("communityTitle");
         String communityContent = intent.getExtras().getString("communityContent");
 
-        Uri uri = getIntent().getParcelableExtra("uri");
 //        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
 //        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
 //        communityImage.setImageBitmap(bitmap);
