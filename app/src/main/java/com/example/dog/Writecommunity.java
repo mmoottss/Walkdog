@@ -3,27 +3,25 @@ package com.example.dog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.io.ByteArrayOutputStream;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
@@ -41,19 +39,25 @@ import java.util.Map;
 
 public class Writecommunity extends AppCompatActivity {
 
-    private final int GET_GALLERY_IMAGE = 200;
-    private ImageView imageview;
+    private ImageView img_et;
     private EditText title_et,content_et;
     private TextView nickname;
     private Button btnSave;
-    Bundle bundle;
-    Bitmap sendbitmap;
-    byte[] image = new byte[100];
-    Uri selectedImageUri;
+    Uri uri;
 
-    String userName = "";
-    String title, content, name;
-    ArrayList<SampleItem> list;
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent intent = result.getData();
+                    uri = intent.getData();  //선택한 사진의 경로 객체 얻어오기
+                    img_et.setImageURI(uri);
+
+                }
+            }
+        });
+
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -62,22 +66,18 @@ public class Writecommunity extends AppCompatActivity {
 
         title_et = (EditText) findViewById(R.id.title_et);
         content_et = (EditText) findViewById(R.id.content_et);
+        img_et = (ImageView) findViewById(R.id.img_et);
         //textview 내용을 string으로 저장
         title_et.getText().toString();
         content_et.getText().toString();
-        title = new String(title_et.getText().toString());
-        content = new String(content_et.getText().toString());
 //        name = new String(nickname.getText().toString());
 
-
-        imageview = (ImageView) findViewById(R.id.imageView);
-        imageview.setOnClickListener(new View.OnClickListener() {
+        img_et.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, GET_GALLERY_IMAGE);
-
-                // 사진을 글쓰는 창에 올리기까지 가능. 글자취소선 이유 모르겠음...
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                launcher.launch(intent);
             }
         });
         //글 작성하기 누를 시
@@ -89,9 +89,6 @@ public class Writecommunity extends AppCompatActivity {
                 String communityContent = content_et.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    private MediaBrowser imageAdapter;
-
-                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -99,39 +96,22 @@ public class Writecommunity extends AppCompatActivity {
                             boolean success = jsonObject.getBoolean("success");
 
                             if (success) {
+
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
+                                String communityimg = jsonObject.getString("communityimg");
+                                Uri uri = Uri.parse(communityimg);
+
                                 Intent intent = new Intent(Writecommunity.this, Community.class);
                                 String userID = intent.getStringExtra("userID");
                                 String userPassword = intent.getStringExtra("userPassword");
                                 String userName = intent.getStringExtra("userName");
-
-//                                String uri = selectedImageUri.toString(); //이미지 string으로 바꾸는 거
-//                                String selectedImageUri = intent.getStringExtra("selectedImageUri");
-//                                int image =  Integer.parseInt(uri);
-//
-//                                int imageResId = imageAdapter.getItem(image);
-//                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(), imageResId);
-
-//                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(),GET_GALLERY_IMAGE);
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                sendBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
-//                                byte[] byteArray = stream.toByteArray();
-//                                intent.putExtra("image",sendBitmap);
-                                // 이미지 보내는 거. byteArray에 넣어서 하면 튕김.
-                                // 안 넣으면 튕기는 건 아닌데 이미지 이동이 안됨.
-
-                                intent.putExtra("selectedImageUri",selectedImageUri);
-                                //uri로 넘기는 방법.
-                                // 이유는 모르겠지만 사진 한 번만 보낼 수 있음. 그 후로는 작성실패뜸. 이유 모름.
-                                // 사진 들어간 후로 작성 실패.
-
-
                                 intent.putExtra("userID", userID);
                                 intent.putExtra("userPassword", userPassword);
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
+                                intent.putExtra("uri", uri);
 
                                 startActivity(intent);
 
@@ -146,8 +126,9 @@ public class Writecommunity extends AppCompatActivity {
 //                                con.addView(sub);
 
                                 //여기까지!
-                                finish();
+
                                 Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
+//                                finish();
                             } else {
                                 Toast.makeText(getApplicationContext(), "글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                 return;
@@ -160,27 +141,15 @@ public class Writecommunity extends AppCompatActivity {
                     }
                 };
                 // 서버로 Volley를 이용해서 요청
-                WriteRequest writeRequest = new WriteRequest(communityTitle, communityContent, responseListener);
+                WriteRequest writeRequest = new WriteRequest(communityTitle, communityContent, uri, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(Writecommunity.this);
                 queue.add(writeRequest);
 
-                ExportRequest exportRequest = new ExportRequest(communityTitle, communityContent, responseListener);
+                ExportRequest exportRequest = new ExportRequest(communityTitle, communityContent, uri, responseListener);
                 Volley.newRequestQueue(Writecommunity.this); //////////////////////////////////////////////////////////
                 queue.add(exportRequest);
             }
         });
-    }
-
-    @Override
-    // 갤러리에 있는 사진을 글쓰는 창에 올리는 코드
-    protected void onActivityResult(int requsetCode, int resultCode, Intent data) {
-        super.onActivityResult(requsetCode, resultCode, data);
-        if (requsetCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            imageview.setImageURI(selectedImageUri);
-        }
-
     }
 
     //뒤로가기 누를 시 글 작성을 취소하시겠습니까? 출력
@@ -219,12 +188,13 @@ public class Writecommunity extends AppCompatActivity {
         final static String URL = "http://skwhdgns111.ivyro.net/community_save.php";
         private Map<String, String> map;
 
-        public WriteRequest(String communityTitle, String communityContent, Response.Listener<String> listener) {
+        public WriteRequest(String communityTitle, String communityContent, Uri communityimg, Response.Listener<String> listener) {
             super(Method.POST, URL, listener, null);
 
             map = new HashMap<>();
             map.put("communityTitle", communityTitle);
             map.put("communityContent", communityContent);
+            map.put("communityimg", communityimg+"");
         }
 
         @Override
@@ -238,12 +208,13 @@ public class Writecommunity extends AppCompatActivity {
         final static String URL = "http://skwhdgns111.ivyro.net/community_export.php";
         private Map<String, String> map;
 
-        public ExportRequest(String communityTitle, String communityContent, Response.Listener<String> listener) {
+        public ExportRequest(String communityTitle, String communityContent, Uri communityimg, Response.Listener<String> listener) {
             super(Method.POST, URL, listener, null);
 
             map = new HashMap<>();
             map.put("communityTitle", communityTitle);
             map.put("communityContent", communityContent);
+            map.put("communityimg", communityimg+"");
         }
 
         @Override

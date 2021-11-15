@@ -34,7 +34,7 @@ public class Register extends AppCompatActivity {
 
     private EditText reg_id, reg_pass, reg_nickname;
     private Button register_confirm, id_check, name_check;
-    public int idcheck = 0, namecheck;
+    public int idcheck = 0, namecheck = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

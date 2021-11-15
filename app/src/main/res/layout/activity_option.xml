@@ -10,9 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/show_option"
-        android:orientation="vertical"
-        android:name="com.example.dog.option"/>
-
+        android:orientation="vertical" />
     <LinearLayout android:id="@+id/lin"
         android:background="@color/theme_color"
         android:layout_width="match_parent"

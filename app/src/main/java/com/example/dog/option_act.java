@@ -6,11 +6,16 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
-public class option_act extends AppCompatActivity {
+public class option_act extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    FragmentManager fragmentManager;
     Button community_button, map_button;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_option);
 
@@ -21,6 +26,10 @@ public class option_act extends AppCompatActivity {
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.show_option, new option(), "main_option")
+                .commit();
 
         //하단바 커뮤니티로 이동
         community_button.setOnClickListener(new View.OnClickListener() {
@@ -47,5 +56,35 @@ public class option_act extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+
+        if(fragmentManager.getBackStackEntryCount() == 0) {
+            finish();
+        }else {
+            fragmentManager.popBackStack();
+        }
+
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
+        //가능하다면 activity_profile로 진입하게 수정.
+        final Bundle args = pref.getExtras();
+            final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
+                    getClassLoader(),
+                    pref.getFragment());
+            fragment.setArguments(args);
+            fragment.setTargetFragment(caller, 0);
+            // Replace the existing Fragment with the new Fragment
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.show_option, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        return true;
     }
 }
