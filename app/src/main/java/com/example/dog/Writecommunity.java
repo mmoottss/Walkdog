@@ -11,9 +11,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,25 +39,24 @@ import java.util.Map;
 
 public class Writecommunity extends AppCompatActivity {
 
-    private final int GET_GALLERY_IMAGE = 200;
     private ImageView img_et;
     private EditText title_et,content_et;
     private TextView nickname;
     private Button btnSave;
-    byte[] image = new byte[100];
     Uri uri;
 
-    @Override
-    // 갤러리에 있는 사진을 글쓰는 창에 올리는 코드
-    protected void onActivityResult(int requsetCode, int resultCode, Intent data) {
-        super.onActivityResult(requsetCode, resultCode, data);
-        if (requsetCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            uri = data.getData();
-            img_et.setImageURI(uri);
-        }
+    ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent intent = result.getData();
+                    uri = intent.getData();  //선택한 사진의 경로 객체 얻어오기
+                    img_et.setImageURI(uri);
 
-    }
+                }
+            }
+        });
 
 
     @Override
@@ -70,11 +74,10 @@ public class Writecommunity extends AppCompatActivity {
 
         img_et.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(intent, GET_GALLERY_IMAGE);
-
-                // 사진을 글쓰는 창에 올리기까지 가능. 글자취소선 이유 모르겠음...
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                launcher.launch(intent);
             }
         });
         //글 작성하기 누를 시
@@ -97,6 +100,7 @@ public class Writecommunity extends AppCompatActivity {
                                 String communityTitle = jsonObject.getString("communityTitle");
                                 String communityContent = jsonObject.getString("communityContent");
                                 String communityimg = jsonObject.getString("communityimg");
+                                Uri uri = Uri.parse(communityimg);
 
                                 Intent intent = new Intent(Writecommunity.this, Community.class);
                                 String userID = intent.getStringExtra("userID");
@@ -108,25 +112,6 @@ public class Writecommunity extends AppCompatActivity {
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
                                 intent.putExtra("uri", uri);
-//                                String uri = selectedImageUri.toString(); //이미지 string으로 바꾸는 거
-//                                String selectedImageUri = intent.getStringExtra("selectedImageUri");
-//                                int image =  Integer.parseInt(uri);
-//
-//                                int imageResId = imageAdapter.getItem(image);
-//                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(), imageResId);
-
-//                                Bitmap sendBitmap = BitmapFactory.decodeResource(getResources(),GET_GALLERY_IMAGE);
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                sendBitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
-//                                byte[] byteArray = stream.toByteArray();
-//                                intent.putExtra("image",sendBitmap);
-                                // 이미지 보내는 거. byteArray에 넣어서 하면 튕김.
-                                // 안 넣으면 튕기는 건 아닌데 이미지 이동이 안됨.
-
-                                //intent.putExtra("selectedImageUri",selectedImageUri);
-                                //uri로 넘기는 방법.
-                                // 이유는 모르겠지만 사진 한 번만 보낼 수 있음. 그 후로는 작성실패뜸. 이유 모름.
-                                // 사진 들어간 후로 작성 실패.
 
                                 startActivity(intent);
 
@@ -141,8 +126,9 @@ public class Writecommunity extends AppCompatActivity {
 //                                con.addView(sub);
 
                                 //여기까지!
-                                finish();
+
                                 Toast.makeText(getApplicationContext(), "글을 작성하였습니다.", Toast.LENGTH_SHORT).show();
+//                                finish();
                             } else {
                                 Toast.makeText(getApplicationContext(), "글 작성에 실패했습니다.", Toast.LENGTH_SHORT).show();
                                 return;

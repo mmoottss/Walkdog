@@ -33,21 +33,10 @@ import java.util.ResourceBundle;
 
 public class Community extends AppCompatActivity {
 
-
-    private static final String KEY_DATA = "KEY_DATA";
     Button write_btn, map_btn, community_btn, option_btn;
-    private TextView title;
     private String TAG = getClass().getSimpleName();
-    private ListView listView;
     Uri uri;
 
-
-    /*@Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        String title_ = title.getText().toString();
-        outState.putString("communityTitle",title_);
-    }*/ //데이터 번들에 저장 (안됨. 공백 유지됨)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +52,11 @@ public class Community extends AppCompatActivity {
         String userID = intent.getStringExtra("userID");
         String userPassword = intent.getStringExtra("userPassword");
         String userName = intent.getStringExtra("userName");
-//        Uri uri = Uri.parse("communityimg");
         String communityTitle = intent.getExtras().getString("communityTitle");
         String communityContent = intent.getExtras().getString("communityContent");
-
-//        Bitmap bitmap = (Bitmap) intent.getExtras().get("image");
-//        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
-//        communityImage.setImageBitmap(bitmap);
-        // 이미지를 bitmap에 저장해서 그대로 옮기는 거.
+        uri = getIntent().getParcelableExtra("uri");
 
 
-//        byte[] arr = getIntent().getByteArrayExtra("image");
-//        Bitmap image = BitmapFactory.decodeByteArray(arr, 0, arr.length);
-//        ImageView communityImage = (ImageView) findViewById(R.id.cont_image);
-//        communityImage.setImageBitmap(image);
-        // 이미지를 bitmap에 저장해서 byteArray에 넣어서 옮기는 거.
 
 
 //        TextView name = (TextView)findViewById(R.id.cont_name);
@@ -85,18 +64,10 @@ public class Community extends AppCompatActivity {
         TextView content = (TextView)findViewById(R.id.cont_text);
         ImageView image = (ImageView)findViewById(R.id.cont_image);
 
-        //글쓰기에서 넘어오는 제목,내용 동적생성한 레이아웃에 적용하기.
-
         title.setText(communityTitle);
 //        name.setText(userName);  //시작할 때부터 있어서 고민해봐야 함
         image.setImageURI(uri);
         content.setText(communityContent);
-
-//        if(savedInstanceState != null) {
-//            String title_ = savedInstanceState.getString("communityTitle");
-//            title.setText(communityTitle);
-//        } //액티비티 전환시 데이터 유지할 때 쓸 수 있는 것 같지만 공백이 유지됨.
-
 
 
 
