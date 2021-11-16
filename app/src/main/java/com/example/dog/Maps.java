@@ -555,7 +555,7 @@ public class Maps extends AppCompatActivity implements OnMapReadyCallback {
         return false;
     }
 
-    //뒤로가기 누를 시 로그아웃 하시겠습니까? 출력
+    //뒤로가기 누를 시 종료 하시겠습니까? 출력
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
