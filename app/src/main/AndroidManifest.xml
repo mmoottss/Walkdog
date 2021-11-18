@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
 
@@ -17,7 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dog"
         android:usesCleartextTraffic="true">
-
+        <service android:name=".Backmap"
+            android:enabled="true"
+            android:exported="true">
+        </service>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCE5n7MIhCmwu6B5v1NMY1CjW6ky4FixkQ" />
