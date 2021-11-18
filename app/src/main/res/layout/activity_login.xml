@@ -3,7 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="302dp"
+        android:layout_height="198dp"
+        android:layout_weight="0"
+        android:translationX="50dp"
+        app:srcCompat="@drawable/appicon" />
+
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="@string/login_title"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textView9"
@@ -13,8 +32,26 @@
         android:text="아이디"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="40dp"
-        android:translationY="250dp" />
+        android:translationX="30dp"
+        android:translationY="100dp" />
+
+    <EditText
+        android:id="@+id/et_id"
+        android:layout_width="242dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_deco"
+        android:foregroundTint="#000000"
+        android:inputType="textCapWords"
+        android:maxLength="15"
+        android:padding="5dp"
+        android:shadowColor="#000000"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="14sp"
+        android:translationX="100dp"
+        android:translationY="40dp"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/textView10"
@@ -24,100 +61,51 @@
         android:text="비밀번호"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-40dp"
-        android:translationY="325dp" />
+        android:translationX="20dp"
+        android:translationY="70dp" />
 
-    <FrameLayout
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        android:animateLayoutChanges="false"
-        android:background="@color/theme_color"
-        android:translationX="-50dp"
-        android:translationY="240dp">
-
-        <FrameLayout
-            android:layout_width="164dp"
-            android:layout_height="50dp"
-            android:animateLayoutChanges="false"
-            android:background="#FFFFFF"
-            android:translationX="8dp"
-            android:translationY="10dp">
-
-            <EditText
-                android:id="@+id/et_id"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:hint="@string/hint_id"
-                android:inputType="textCapWords"
-                android:maxLength="15"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp" />
-
-        </FrameLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        android:animateLayoutChanges="false"
-        android:background="@color/theme_color"
-        android:translationX="-230dp"
-        android:translationY="315dp">
-
-        <FrameLayout
-            android:layout_width="164dp"
-            android:layout_height="50dp"
-            android:animateLayoutChanges="false"
-            android:background="#FFFFFF"
-            android:translationX="8dp"
-            android:translationY="10dp">
-
-            <EditText
-                android:id="@+id/et_pass"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:hint="@string/hint_pass"
-                android:inputType="textPassword"
-                android:maxLength="15"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp" />
-
-        </FrameLayout>
-    </FrameLayout>
+    <EditText
+        android:id="@+id/et_pass"
+        android:layout_width="242dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_deco"
+        android:inputType="textPassword"
+        android:maxLength="15"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="14sp"
+        android:translationX="100dp"
+        android:translationY="10dp"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="80dp"
+        android:layout_width="242dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/theme_color"
+        android:fontFamily="@font/sangsangtitlem"
         android:includeFontPadding="true"
-        android:text="로그인"
+        android:text="워킹독 Login"
         android:textColor="#000000"
-        android:textSize="15sp"
-        android:translationX="-220dp"
-        android:translationY="320dp" />
+        android:textSize="26dp"
+        android:translationX="100dp"
+        android:translationY="15dp" />
 
     <Button
         android:id="@+id/btn_register"
-        android:layout_width="110dp"
-        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:layout_weight="0"
         android:backgroundTint="@color/theme_color"
-        android:fontFamily="@font/archivo_black"
+        android:fontFamily="@font/sangsangtitlem"
         android:includeFontPadding="true"
         android:text="회원가입"
         android:textColor="#000000"
-        android:textSize="18sp"
-        android:translationX="-455dp"
-        android:translationY="410dp" />
+        android:textSize="16dp"
+        android:translationX="165dp"
+        android:translationY="20dp" />
 
 
 </LinearLayout>

@@ -15,4 +15,5 @@
     <string name="cummunity">커뮤니티</string>
     <string name="mylocation">내위치</string>
     <string name="callloc">경로가져오기</string>
+    <string name="login_title">계속하려면 로그인해주세요.</string>
 </resources>
