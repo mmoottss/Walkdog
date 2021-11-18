@@ -54,7 +54,7 @@ public class Community extends AppCompatActivity {
         String userName = intent.getStringExtra("userName");
         String communityTitle = intent.getExtras().getString("communityTitle");
         String communityContent = intent.getExtras().getString("communityContent");
-        uri = getIntent().getParcelableExtra("uri");
+        uri = intent.getData();
 
 
 

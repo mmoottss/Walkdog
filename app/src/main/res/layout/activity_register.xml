@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#6DF870"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="170dp"
@@ -25,6 +25,13 @@
             android:textSize="20sp" />
     </FrameLayout>
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="232dp"
+        android:layout_weight="0"
+        app:srcCompat="@drawable/appicon" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -34,55 +41,37 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-120dp"
-        android:translationY="230dp" />
+        android:translationX="20dp"
+        android:translationY="20dp" />
+
+    <EditText
+        android:id="@+id/reg_id"
+        android:layout_width="220dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_deco"
+        android:inputType="textCapWords"
+        android:maxLength="15"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="14sp"
+        android:translationX="95dp"
+        android:translationY="-10dp"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <Button
-        android:id="@+id/register_confirm2"
-        android:layout_width="200dp"
+        android:id="@+id/id_check"
+        android:layout_width="80dp"
         android:layout_height="70dp"
         android:layout_weight="0"
         android:backgroundTint="@color/theme_color"
-        android:text="회원가입 하기"
+        android:text="중복 체크"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
-        android:translationX="-820dp"
-        android:translationY="500dp" />
-
-    <FrameLayout
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        android:animateLayoutChanges="false"
-        android:background="@color/theme_color"
-        android:translationX="-310dp"
-        android:translationY="220dp">
-
-        <FrameLayout
-            android:layout_width="164dp"
-            android:layout_height="50dp"
-            android:animateLayoutChanges="false"
-            android:background="#FFFFFF"
-            android:translationX="8dp"
-            android:translationY="10dp">\
-
-            <EditText
-                android:id="@+id/reg_id"
-                android:layout_width="match_parent"
-                android:layout_height="51dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:hint="@string/hint_id"
-                android:inputType="textCapWords"
-                android:maxLength="15"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp" />
-
-        </FrameLayout>
-
-    </FrameLayout>
+        android:translationX="320dp"
+        android:translationY="-70dp" />
 
     <TextView
         android:id="@+id/textView3"
@@ -93,56 +82,24 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-580dp"
-        android:translationY="310dp" />
+        android:translationX="10dp"
+        android:translationY="-60dp" />
 
-    <Button
-        android:id="@+id/id_check"
-        android:layout_width="89dp"
-        android:layout_height="70dp"
-        android:layout_weight="0"
-        android:backgroundTint="@color/theme_color"
-        android:text="중복 체크"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:translationX="-390dp"
-        android:translationY="210dp" />
-
-    <FrameLayout
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        android:layout_weight="0"
-        android:animateLayoutChanges="false"
-        android:background="@color/theme_color"
-        android:translationX="-665dp"
-        android:translationY="305dp">
-
-        <FrameLayout
-            android:layout_width="164dp"
-            android:layout_height="50dp"
-            android:animateLayoutChanges="false"
-            android:background="#FFFFFF"
-            android:translationX="8dp"
-            android:translationY="10dp">
-
-            <EditText
-                android:id="@+id/reg_pass"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:hint="@string/hint_pass"
-                android:inputType="textPassword"
-                android:maxLength="15"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp" />
-
-        </FrameLayout>
-
-    </FrameLayout>
+    <EditText
+        android:id="@+id/reg_pass"
+        android:layout_width="220dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_deco"
+        android:inputType="textPassword"
+        android:maxLength="15"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="14sp"
+        android:translationX="95dp"
+        android:translationY="-100dp"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/textView4"
@@ -153,12 +110,28 @@
         android:textAlignment="textStart"
         android:textColor="#000000"
         android:textSize="20sp"
-        android:translationX="-920dp"
-        android:translationY="400dp" />
+        android:translationX="20dp"
+        android:translationY="-80dp" />
+
+    <EditText
+        android:id="@+id/reg_nickcname"
+        android:layout_width="220dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/login_deco"
+        android:inputType="textCapWords"
+        android:maxLength="8"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black"
+        android:textSize="14sp"
+        android:translationX="95dp"
+        android:translationY="-125dp"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
     <Button
         android:id="@+id/name_check"
-        android:layout_width="89dp"
+        android:layout_width="80dp"
         android:layout_height="70dp"
         android:layout_weight="0"
         android:backgroundTint="@color/theme_color"
@@ -166,43 +139,8 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
-        android:translationX="-720dp"
-        android:translationY="385dp" />
-
-    <FrameLayout
-        android:layout_width="180dp"
-        android:layout_height="70dp"
-        android:layout_weight="0"
-        android:animateLayoutChanges="false"
-        android:background="@color/theme_color"
-        android:translationX="-997dp"
-        android:translationY="395dp">
-
-        <FrameLayout
-            android:layout_width="164dp"
-            android:layout_height="50dp"
-            android:animateLayoutChanges="false"
-            android:background="#FFFFFF"
-            android:translationX="8dp"
-            android:translationY="10dp">
-
-            <EditText
-                android:id="@+id/reg_nickcname"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:hint="@string/hint_nickname"
-                android:inputType="textCapWords"
-                android:maxLength="8"
-                android:padding="5dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/black"
-                android:textSize="14sp" />
-
-        </FrameLayout>
-
-    </FrameLayout>
+        android:translationX="320dp"
+        android:translationY="-185dp" />
 
     <Button
         android:id="@+id/register_confirm"
@@ -214,7 +152,7 @@
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="18sp"
-        android:translationX="-1190dp"
-        android:translationY="500dp" />
+        android:translationX="100dp"
+        android:translationY="-160dp" />
 
 </LinearLayout>

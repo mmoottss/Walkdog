@@ -3,6 +3,7 @@ package com.example.dog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.browse.MediaBrowser;
 import android.net.Uri;
 import android.os.Build;
@@ -111,7 +112,6 @@ public class Writecommunity extends AppCompatActivity {
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("communityTitle", communityTitle);
                                 intent.putExtra("communityContent", communityContent);
-                                intent.putExtra("uri", uri);
 
                                 startActivity(intent);
 
