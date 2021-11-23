@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+<!--    옵션 건드릴만한 사항 찾아보기...
+
+추가기능
+1. 구글 지도 종류 바꿀 수 있게....
+    지도 생성 시 스타일을 설정할 수 있음
+    -> 옵션에서 건드릴 수 있게끔
+
+2. 야간모드 수정-->
 
     <PreferenceCategory android:title="마이페이지">
         <Preference
@@ -28,7 +36,9 @@
     <PreferenceCategory android:title="고객지원">
         <Preference
             android:key="developers"
-            android:title="개발자 정보">
+            android:title="개발자 정보"
+            app:selectable="false">
+<!--            개발자 정보는 쓸데없어 보이니 추후 삭제하기로-->
         </Preference>
         <!--문의하기 클릭시 메일 보내는 창으로 넘어감-->
         <Preference

@@ -2,19 +2,20 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <PreferenceCategory android:title="계정 관리">
-    <Preference
-        android:key="profile"
-        android:title="닉네임 변경" />
-    <!--        프로필 관리 버튼 클릭 시 activity_profile로 이동-->
-    <!--        프로필 -> 프로필 사진, 닉네임(아이디), 반려견 프로필-->
-    <Preference
+    <EditTextPreference
+        android:dialogTitle="새로운 닉네임"
+        android:key="change_name"
+        android:title="닉네임 변경" >
+    </EditTextPreference>
+    <EditTextPreference
+        android:dialogTitle="현재 비밀번호"
         android:key="change_pw"
         android:title="비밀번호 변경"/>
     <Preference
-        android:key="LogOut"
+        android:key="Logout"
         android:title="로그아웃"/>
     <Preference
         android:key="Leave"
-        android:title="탈퇴하기"/>
+        android:title="회원 탈퇴"/>
 </PreferenceCategory>
 </androidx.preference.PreferenceScreen>

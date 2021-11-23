@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="알림 설정">
-                    <SwitchPreference
-                        android:title="알림 받기"
-                        android:defaultValue="true"
-                        android:key="Ringing"/>
-                    <!--알림 받기 true 시 하단 표시-->
-                    <SwitchPreference
-                        android:key="sound"
-                        android:title="소리"
-                        android:dependency="Ringing"
-                        android:defaultValue="true"/>
-                    <SwitchPreference
-                        android:key="vibrate"
-                        android:title="진동"
-                        android:dependency="Ringing"/>
+        <SwitchPreference
+            android:title="알림 받기"
+            android:defaultValue="true"
+            android:key="Ringing"/>
+        <SwitchPreference
+            android:key="sound"
+            android:title="소리"
+            android:dependency="Ringing"
+            android:defaultValue="true"/>
+        <ListPreference
+            android:key="sound_list"
+            android:title="알림음 설정"
+            android:dependency="sound"
+            android:defaultValue="자전거 소리"
+            android:entries="@array/alarm_sound"
+            android:entryValues="@array/alarm_sound_value"/>
+        <SwitchPreference
+            android:key="vibrate"
+            android:title="진동"
+            android:dependency="Ringing"/>
     </PreferenceCategory>
 </PreferenceScreen>

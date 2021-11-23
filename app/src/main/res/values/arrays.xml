@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="route_accu">
+        <item>1</item>
+        <item>2</item>
+        <item>7</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="alarm_sound">
+        <item>자전거 소리</item>
+        <item>강아지 소리</item>
+        <item>장난감 소리</item>
+    </string-array>
+
+    <string-array name="alarm_sound_value">
+        <item>bicycle_sound</item>
+        <item>dog_sound</item>
+        <item>toy_sound</item>
+    </string-array>
+</resources>
